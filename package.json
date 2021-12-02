@@ -1,0 +1,26 @@
+{
+  "name": "monitoring-system",
+  "version": "1.0.0",
+  "description": "Proactive monitoring system",
+  "main": "index.js",
+  "scripts": {
+    "dev": "ts-node-dev --inspect --transpile-only --ignore-watch node_modules src/server.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GabrielCrespo/monitoring-system.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GabrielCrespo/monitoring-system/issues"
+  },
+  "homepage": "https://github.com/GabrielCrespo/monitoring-system#readme",
+  "devDependencies": {
+    "@types/node": "^16.11.11",
+    "ts-node-dev": "^1.1.8",
+    "tsconfig-paths": "^3.12.0",
+    "typescript": "^4.5.2"
+  }
+}
