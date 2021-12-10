@@ -5,6 +5,7 @@ import cors from "cors";
 import routes from "./routes";
 import AppError from "@shared/errors/AppError";
 import "@shared/typeorm";
+import { errors } from "celebrate";
 
 const port = 3333;
 
@@ -14,6 +15,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use(routes);
+
+app.use(errors());
 
 app.use(
   (error: Error, request: Request, response: Response, next: NextFunction) => {
