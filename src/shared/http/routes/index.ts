@@ -1,9 +1,9 @@
 import { Router } from "express";
+import courseRouter from "@modules/course/routes/course.routes";
 
 const routes = Router();
 
-routes.get("/", (request, response) => {
-  return response.json({ message: "Novamente essa merda!" });
-});
+routes.use("/course", courseRouter);
+
 
 export default routes;
