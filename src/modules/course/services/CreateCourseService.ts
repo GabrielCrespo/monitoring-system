@@ -11,7 +11,7 @@ class CreateCourseService {
   public async execute({ descricao }: IRequest): Promise<Course> {
     const courseRepository = getCustomRepository(CourseRepository);
 
-    const courseExists = await courseRepository.findByName(descricao);
+    const courseExists = await courseRepository.findByDescription(descricao);
 
     if (courseExists) {
       throw new AppError("Esse curso já está cadastrado");

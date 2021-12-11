@@ -3,7 +3,7 @@ import Course from "../entities/Course";
 
 @EntityRepository(Course)
 class CourseRepository extends Repository<Course> {
-  public async findByName(descricao: string): Promise<Course | undefined> {
+  public async findByDescription(descricao: string): Promise<Course | undefined> {
     const course = await this.findOne({
       where: {
         descricao,

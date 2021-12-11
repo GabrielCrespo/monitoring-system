@@ -18,7 +18,7 @@ class UpdateCourseService {
       throw new AppError("O curso não foi encontrado!");
     }
 
-    const descricaoExists = await courseRepository.findByName(descricao);
+    const descricaoExists = await courseRepository.findByDescription(descricao);
 
     if (descricaoExists && course.descricao !== descricao) {
       throw new AppError("Já existe um curso cadastrado com esse nome!");
