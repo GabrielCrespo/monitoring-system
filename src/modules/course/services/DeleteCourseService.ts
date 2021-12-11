@@ -16,7 +16,7 @@ class DeleteCourseService {
       throw new AppError("O curso não foi encontrado!");
     }
 
-    await courseRepository.delete(course);
+    await courseRepository.remove(course);
   }
 }
 

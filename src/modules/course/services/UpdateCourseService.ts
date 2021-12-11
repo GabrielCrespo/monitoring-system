@@ -5,11 +5,11 @@ import CourseRepository from "../typeorm/repositories/CourseRepository";
 
 interface IRequest {
   id: number;
-  description: string;
+  descricao: string;
 }
 
 class UpdateCourseService {
-  public async execute({ id, description }: IRequest): Promise<Course> {
+  public async execute({ id, descricao }: IRequest): Promise<Course> {
     const courseRepository = getCustomRepository(CourseRepository);
 
     const course = await courseRepository.findOne(id);
@@ -18,13 +18,13 @@ class UpdateCourseService {
       throw new AppError("O curso não foi encontrado!");
     }
 
-    const descriptionExists = await courseRepository.findByName(description);
+    const descricaoExists = await courseRepository.findByName(descricao);
 
-    if (descriptionExists && course.descricao !== description) {
+    if (descricaoExists && course.descricao !== descricao) {
       throw new AppError("Já existe um curso cadastrado com esse nome!");
     }
 
-    course.descricao = description;
+    course.descricao = descricao;
 
     await courseRepository.save(course);
 
