@@ -48,7 +48,7 @@ class CourseController {
     return response.json(course);
   }
 
-  public async delete(request: Request, response: Response) {
+  public async delete(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
 
     const deleteCourseService = new DeleteCourseService();

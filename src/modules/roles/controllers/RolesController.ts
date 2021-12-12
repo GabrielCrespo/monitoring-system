@@ -48,12 +48,14 @@ class RolesController {
     return response.json(role);
   }
 
-  public async delete(request: Request, response: Response): Promise<void> {
+  public async delete(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
 
     const deleteRoleService = new DeleteRoleService();
 
     await deleteRoleService.execute({ id: Number.parseInt(id) });
+
+    return response.json([])
   }
 }
 

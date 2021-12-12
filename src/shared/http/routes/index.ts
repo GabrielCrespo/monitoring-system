@@ -5,7 +5,7 @@ import rolesRouter from "@modules/roles/routes/roles.routes";
 const routes = Router();
 
 routes.use("/course", courseRouter);
-routes.use("/roles", rolesRouter);
+routes.use("/role", rolesRouter);
 
 
 export default routes;
