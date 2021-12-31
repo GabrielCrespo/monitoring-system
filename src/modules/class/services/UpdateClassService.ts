@@ -1,3 +1,4 @@
+import DayOfWeek from "@modules/dayofweek/typeorm/entities/DayOfWeek";
 import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
 import Class from "../typeorm/entities/Class";
@@ -8,6 +9,7 @@ interface IRequest {
   descricao: string;
   hora_inicio: Date;
   hora_fim: Date;
+  dias_da_semana: DayOfWeek[],
 }
 
 class UpdateClassService {
@@ -16,6 +18,7 @@ class UpdateClassService {
     descricao,
     hora_inicio,
     hora_fim,
+    dias_da_semana,
   }: IRequest): Promise<Class> {
     const classRepository = getCustomRepository(ClassRepository);
 
@@ -34,6 +37,7 @@ class UpdateClassService {
     team.descricao = descricao;
     team.hora_inicio = hora_inicio;
     team.hora_fim = hora_fim;
+    team.dias_da_semana = dias_da_semana;
 
     await classRepository.save(team);
 
