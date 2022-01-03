@@ -18,7 +18,7 @@ class Role {
   descricao: string;
 
   @OneToMany(() => Teacher, teacher => teacher.funcao)
-  professor: Teacher; 
+  professor: Teacher[]; 
 
   @CreateDateColumn()
   created_at: Date;

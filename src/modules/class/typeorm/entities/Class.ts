@@ -1,10 +1,12 @@
 import DayOfWeek from "../../../dayofweek/typeorm/entities/DayOfWeek";
+import Teacher from "../../../teacher/typeorm/entities/Teacher";
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinTable,
   ManyToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -23,6 +25,9 @@ class Class {
 
   @Column("time")
   hora_fim: Date;
+
+  @OneToOne(() => Teacher, teacher => teacher.turma)
+  professor: Teacher;
 
   @ManyToMany(() => DayOfWeek, {eager: true})
   @JoinTable()

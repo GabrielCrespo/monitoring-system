@@ -28,7 +28,8 @@ app.use(
     }
     return response.status(500).json({
       status: "erro",
-      message: "Erro interno do servidor!",
+      message: "Erro interno do servidor!"
+      //message: error.stack,
     });
   }
 );

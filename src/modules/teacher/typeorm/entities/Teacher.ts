@@ -29,14 +29,14 @@ class Teacher {
   @Column("varchar", { nullable: true })
   avatar: string;
 
-  @ManyToOne(() => Role, (role) => role.professor)
+  @ManyToOne(() => Role, (role) => role.professor, { eager: true })
   funcao: Role;
 
-  @OneToOne(() => Class)
+  @OneToOne(() => Class, turma => turma.professor,  { eager: true, })
   @JoinColumn()
   turma: Class;
 
-  @Column()
+  @Column({ default: true })
   ativo: boolean;
 
   @CreateDateColumn()
