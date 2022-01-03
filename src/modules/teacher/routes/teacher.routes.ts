@@ -1,3 +1,4 @@
+import { celebrate, Joi, Segments } from "celebrate";
 import { Router } from "express";
 import TeacherController from "../controllers/TeacherController";
 
@@ -5,7 +6,25 @@ const teacherRouter = Router();
 const teacherController = new TeacherController();
 
 teacherRouter.get("/", teacherController.index);
-teacherRouter.get("/:id", teacherController.show);
-teacherRouter.post("/", teacherController.create);
+teacherRouter.get(
+  "/:id",
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+  }),
+  teacherController.show
+);
+teacherRouter.post(
+  "/",
+  celebrate({
+    [Segments.BODY]: {
+      nome: Joi.string().required(),
+      email: Joi.string().email().required(),
+      senha: Joi.string().required(),
+    },
+  }),
+  teacherController.create
+);
 
 export default teacherRouter;
