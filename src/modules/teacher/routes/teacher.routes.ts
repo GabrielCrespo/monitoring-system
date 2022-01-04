@@ -44,5 +44,14 @@ teacherRouter.put(
   }),
   teacherController.update
 );
+teacherRouter.delete(
+  "/:id",
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+  }),
+  teacherController.delete
+);
 
 export default teacherRouter;
