@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import CreateTeacherService from "../services/CreateTeacherService";
 import ListTeacherService from "../services/ListTeacherService";
 import ShowTeacherService from "../services/ShowTeacherService";
+import UpdateTeacherService from "../services/UpdateTeacherService";
 
 class TeacherController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -30,6 +31,24 @@ class TeacherController {
     const createTeacherService = new CreateTeacherService();
 
     const teacher = await createTeacherService.execute({
+      nome,
+      email,
+      senha,
+      funcao,
+      turma,
+    });
+
+    return response.json(teacher);
+  }
+
+  public async update(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+    const { nome, email, senha, funcao, turma } = request.body;
+
+    const updateTeacherService = new UpdateTeacherService();
+
+    const teacher = await updateTeacherService.execute({
+      id: Number.parseInt(id),
       nome,
       email,
       senha,

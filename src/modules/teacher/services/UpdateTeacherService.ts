@@ -7,6 +7,7 @@ import TeacherRepository from "../typeorm/repositories/TeacherRepository";
 import bcrypt from "bcrypt";
 
 interface IRequest {
+  id: number;
   nome: string;
   email: string;
   senha: string;
@@ -14,8 +15,9 @@ interface IRequest {
   turma: Class;
 }
 
-class CreateTeacherService {
+class UpdateTeacherService {
   public async execute({
+    id,
     nome,
     email,
     senha,
@@ -24,27 +26,31 @@ class CreateTeacherService {
   }: IRequest): Promise<Teacher> {
     const teacherRepository = getCustomRepository(TeacherRepository);
 
+    const teacher = await teacherRepository.findById(id);
+
+    if (!teacher) {
+      throw new AppError("Professor não encontrado!");
+    }
+
     const emailExists = await teacherRepository.findByEmail(email);
 
-    if (emailExists) {
+    if (emailExists && teacher.email != email) {
       throw new AppError("O email já está cadastrado!");
     }
 
     const classExists = await teacherRepository.findByClass(turma);
 
-    if (classExists) {
+    if (classExists && teacher.turma.id != turma.id) {
       throw new AppError("Já há um professor cadastrado para essa turma!");
     }
 
-    const senhaHash = await bcrypt.hash(senha, 8);
+    const hashedSenha = await bcrypt.hash(senha, 8);
 
-    const teacher = teacherRepository.create({
-      nome,
-      email,
-      senha: senhaHash,
-      funcao,
-      turma,
-    });
+    teacher.nome = nome;
+    teacher.email = email;
+    teacher.senha = hashedSenha;
+    teacher.funcao = funcao;
+    teacher.turma = turma;
 
     await teacherRepository.save(teacher);
 
@@ -52,4 +58,4 @@ class CreateTeacherService {
   }
 }
 
-export default CreateTeacherService;
+export default UpdateTeacherService;
