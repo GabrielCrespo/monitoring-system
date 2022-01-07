@@ -1,22 +1,22 @@
 import { Router } from "express";
 import { celebrate, Joi, Segments } from "celebrate";
-import ClassController from "../controllers/ClassController";
+import TeamController from "../controllers/TeamController";
 
-const classRouter = Router();
-const classController = new ClassController();
+const teamRouter = Router();
+const teamController = new TeamController();
 
-classRouter.get("/", classController.index);
-classRouter.get(
+teamRouter.get("/", teamController.index);
+teamRouter.get(
   "/:id",
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.number().required(),
     },
   }),
-  classController.show
+  teamController.show
 );
 
-classRouter.post(
+teamRouter.post(
   "/",
   celebrate({
     [Segments.BODY]: {
@@ -26,10 +26,10 @@ classRouter.post(
       dias_da_semana: Joi.array().required(),
     },
   }),
-  classController.create
+  teamController.create
 );
 
-classRouter.put(
+teamRouter.put(
   "/:id",
   celebrate({
     [Segments.PARAMS]: {
@@ -42,17 +42,17 @@ classRouter.put(
       dias_da_semana: Joi.array().required(),
     },
   }),
-  classController.update
+  teamController.update
 );
 
-classRouter.delete(
+teamRouter.delete(
   "/:id",
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.number().required(),
     },
   }),
-  classController.delete
+  teamController.delete
 );
 
-export default classRouter;
+export default teamRouter;

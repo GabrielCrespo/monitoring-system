@@ -1,4 +1,4 @@
-import Class from "@modules/class/typeorm/entities/Class";
+import Team from "@modules/class/typeorm/entities/Team";
 import { EntityRepository, Repository } from "typeorm";
 import Teacher from "../entities/Teacher";
 
@@ -30,7 +30,7 @@ class TeacherRepository extends Repository<Teacher> {
     return teacher;
   }
 
-  public async findByClass(turma: Class): Promise<Teacher | undefined> {
+  public async findByClass(turma: Team): Promise<Teacher | undefined> {
     const teacher = await this.findOne({
       where: {
         turma,

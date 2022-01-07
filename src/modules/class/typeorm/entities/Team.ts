@@ -13,7 +13,7 @@ import {
 
 
 @Entity("turma")
-class Class {
+class Team {
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -40,4 +40,4 @@ class Class {
   updated_at: Date;
 }
 
-export default Class;
+export default Team;

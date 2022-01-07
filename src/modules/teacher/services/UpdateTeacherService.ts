@@ -1,4 +1,4 @@
-import Class from "@modules/class/typeorm/entities/Class";
+import Team from "@modules/class/typeorm/entities/Team";
 import Role from "@modules/roles/typeorm/entities/Role";
 import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
@@ -12,7 +12,7 @@ interface IRequest {
   email: string;
   senha: string;
   funcao: Role;
-  turma: Class;
+  turma: Team;
 }
 
 class UpdateTeacherService {

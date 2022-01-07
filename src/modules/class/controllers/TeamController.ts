@@ -1,15 +1,15 @@
 import { Request, Response } from "express";
-import CreateClassService from "../services/CreateClassService";
-import DeleteClassService from "../services/DeleteClassService";
-import ListClassService from "../services/ListClassService";
-import ShowClassService from "../services/ShowClassService";
-import UpdateClassService from "../services/UpdateClassService";
+import CreateTeamService from "../services/CreateTeamService";
+import DeleteTeamService from "../services/DeleteTeamService";
+import ListTeamService from "../services/ListTeamService";
+import ShowTeamService from "../services/ShowTeamService";
+import UpdateTeamService from "../services/UpdateTeamService";
 
-class ClassController {
+class TeamController {
   public async index(request: Request, response: Response): Promise<Response> {
-    const listClassService = new ListClassService();
+    const listTeamService = new ListTeamService();
 
-    const classes = await listClassService.execute();
+    const classes = await listTeamService.execute();
 
     return response.json(classes);
   }
@@ -17,9 +17,9 @@ class ClassController {
   public async show(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
 
-    const showClassService = new ShowClassService();
+    const showTeamService = new ShowTeamService();
 
-    const team = await showClassService.execute({ id: Number.parseInt(id) });
+    const team = await showTeamService.execute({ id: Number.parseInt(id) });
 
     return response.json(team);
   }
@@ -27,7 +27,7 @@ class ClassController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { descricao, hora_inicio, hora_fim, dias_da_semana } = request.body;
 
-    const createClassSercive = new CreateClassService();
+    const createClassSercive = new CreateTeamService();
 
     const team = await createClassSercive.execute({
       descricao,
@@ -43,9 +43,9 @@ class ClassController {
     const { id } = request.params;
     const { descricao, hora_inicio, hora_fim, dias_da_semana } = request.body;
 
-    const updateClassService = new UpdateClassService();
+    const updateTeamService = new UpdateTeamService();
 
-    const team = await updateClassService.execute({
+    const team = await updateTeamService.execute({
       id: Number.parseInt(id),
       descricao,
       hora_inicio,
@@ -59,12 +59,12 @@ class ClassController {
   public async delete(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
 
-    const deleteClassService = new DeleteClassService();
+    const deleteTeamService = new DeleteTeamService();
 
-    await deleteClassService.execute({ id: Number.parseInt(id) });
+    await deleteTeamService.execute({ id: Number.parseInt(id) });
 
     return response.json([]);
   }
 }
 
-export default ClassController;
+export default TeamController;

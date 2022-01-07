@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import Class from "../../../class/typeorm/entities/Class";
+import Team from "../../../class/typeorm/entities/Team";
 import Role from "../../../roles/typeorm/entities/Role";
 
 @Entity("professor")
@@ -32,9 +32,9 @@ class Teacher {
   @ManyToOne(() => Role, (role) => role.professor, { eager: true })
   funcao: Role;
 
-  @OneToOne(() => Class, turma => turma.professor,  { eager: true, })
+  @OneToOne(() => Team, turma => turma.professor,  { eager: true, })
   @JoinColumn()
-  turma: Class;
+  turma: Team;
 
   @Column({ default: true })
   ativo: boolean;

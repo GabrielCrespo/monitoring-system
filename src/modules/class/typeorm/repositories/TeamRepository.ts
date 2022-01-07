@@ -1,5 +1,5 @@
 import { EntityRepository, Repository } from "typeorm";
-import Class from "../entities/Class";
+import Team from "../entities/Team";
 
 interface IDayOfWeek {
   descricao: string;
@@ -12,16 +12,16 @@ interface IRequest {
   dias_da_semana: IDayOfWeek[];
 }
  
-@EntityRepository(Class)
-class ClassRepository extends Repository<Class> {
-  public async findById(id: number): Promise<Class | undefined> {
+@EntityRepository(Team)
+class TeamRepository extends Repository<Team> {
+  public async findById(id: number): Promise<Team | undefined> {
     const team = await this.findOne(id);
     return team;
   }
 
   public async findByDescription(
     descricao: string
-  ): Promise<Class | undefined> {
+  ): Promise<Team | undefined> {
     const team = await this.findOne({
       where: {
         descricao,
@@ -31,12 +31,12 @@ class ClassRepository extends Repository<Class> {
     return team;
   }
 
-  public async createClass({
+  public async createTeam({
     descricao,
     hora_inicio,
     hora_fim,
     dias_da_semana,
-  }: IRequest): Promise<Class> {
+  }: IRequest): Promise<Team> {
     const team = this.create({
       descricao,
       hora_inicio,
@@ -49,4 +49,4 @@ class ClassRepository extends Repository<Class> {
   }
 }
 
-export default ClassRepository;
+export default TeamRepository;

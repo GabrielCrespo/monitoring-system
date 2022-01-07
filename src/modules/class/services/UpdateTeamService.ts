@@ -1,8 +1,8 @@
 import DayOfWeek from "@modules/dayofweek/typeorm/entities/DayOfWeek";
 import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
-import Class from "../typeorm/entities/Class";
-import ClassRepository from "../typeorm/repositories/ClassRepository";
+import Team from "../typeorm/entities/Team";
+import TeamRepository from "../typeorm/repositories/TeamRepository";
 
 interface IRequest {
   id: number;
@@ -12,23 +12,23 @@ interface IRequest {
   dias_da_semana: DayOfWeek[],
 }
 
-class UpdateClassService {
+class UpdateTeamService {
   public async execute({
     id,
     descricao,
     hora_inicio,
     hora_fim,
     dias_da_semana,
-  }: IRequest): Promise<Class> {
-    const classRepository = getCustomRepository(ClassRepository);
+  }: IRequest): Promise<Team> {
+    const teamRepository = getCustomRepository(TeamRepository);
 
-    const team = await classRepository.findOne(id);
+    const team = await teamRepository.findOne(id);
 
     if (!team) {
       throw new AppError("A turma não foi encontrada!");
     }
 
-    const descricaoExists = await classRepository.findByDescription(descricao);
+    const descricaoExists = await teamRepository.findByDescription(descricao);
 
     if (descricaoExists && team.descricao !== descricao) {
       throw new AppError("A turma já está cadastrada!");
@@ -39,10 +39,10 @@ class UpdateClassService {
     team.hora_fim = hora_fim;
     team.dias_da_semana = dias_da_semana;
 
-    await classRepository.save(team);
+    await teamRepository.save(team);
 
     return team;
   }
 }
 
-export default UpdateClassService;
+export default UpdateTeamService;
