@@ -1,4 +1,4 @@
-import { EntityRepository, Repository } from "typeorm";
+import { EntityRepository, In, Repository } from "typeorm";
 import Team from "../entities/Team";
 
 interface IDayOfWeek {
@@ -11,7 +11,7 @@ interface IRequest {
   hora_fim: Date;
   dias_da_semana: IDayOfWeek[];
 }
- 
+
 @EntityRepository(Team)
 class TeamRepository extends Repository<Team> {
   public async findById(id: number): Promise<Team | undefined> {
@@ -19,9 +19,7 @@ class TeamRepository extends Repository<Team> {
     return team;
   }
 
-  public async findByDescription(
-    descricao: string
-  ): Promise<Team | undefined> {
+  public async findByDescription(descricao: string): Promise<Team | undefined> {
     const team = await this.findOne({
       where: {
         descricao,
