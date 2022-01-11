@@ -11,6 +11,11 @@ class RolesRepository extends Repository<Role> {
     });
     return role;
   }
+  
+  public async findById(id: number): Promise<Role | undefined> {
+    const role = await this.findOne(id);
+    return role;
+  }
 }
 
 export default RolesRepository;
