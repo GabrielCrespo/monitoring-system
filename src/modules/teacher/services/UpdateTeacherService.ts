@@ -5,6 +5,8 @@ import { getCustomRepository } from "typeorm";
 import Teacher from "../typeorm/entities/Teacher";
 import TeacherRepository from "../typeorm/repositories/TeacherRepository";
 import bcrypt from "bcrypt";
+import RolesRepository from "@modules/roles/typeorm/repositories/RolesRepository";
+import TeamRepository from "@modules/class/typeorm/repositories/TeamRepository";
 
 interface IRequest {
   id: number;
@@ -25,6 +27,8 @@ class UpdateTeacherService {
     turma,
   }: IRequest): Promise<Teacher> {
     const teacherRepository = getCustomRepository(TeacherRepository);
+    const roleRepository = getCustomRepository(RolesRepository);
+    const teamRepository = getCustomRepository(TeamRepository);
 
     const teacher = await teacherRepository.findById(id);
 
@@ -42,6 +46,18 @@ class UpdateTeacherService {
 
     if (classExists && teacher.turma.id != turma.id) {
       throw new AppError("Já há um professor cadastrado para essa turma!");
+    }
+
+    const roleExists = await roleRepository.findById(funcao.id);
+
+    if (!roleExists) {
+      throw new AppError("Não foi possível encontrar a função");
+    }
+
+    const teamExists = await teamRepository.findById(turma.id);
+
+    if (!teamExists) {
+      throw new AppError("Não foi possível encontrar a turma");
     }
 
     const hashedSenha = await bcrypt.hash(senha, 8);
