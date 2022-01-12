@@ -1,3 +1,4 @@
+import isAuthenticated from "@shared/http/middlewares/IsAuthenticated";
 import { celebrate, Joi, Segments } from "celebrate";
 import { Router } from "express";
 import TeacherController from "../controllers/TeacherController";
@@ -5,7 +6,7 @@ import TeacherController from "../controllers/TeacherController";
 const teacherRouter = Router();
 const teacherController = new TeacherController();
 
-teacherRouter.get("/", teacherController.index);
+teacherRouter.get("/", isAuthenticated, teacherController.index);
 teacherRouter.get(
   "/:id",
   celebrate({

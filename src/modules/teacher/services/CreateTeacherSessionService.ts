@@ -41,11 +41,11 @@ class CreateTeacherSessionService {
     const token = sign({}, auth.jwt.secret, {
       subject: teacher.id.toString(),
       expiresIn: auth.jwt.expiresIn,
-    })
+    });
 
     return {
       professor: teacher,
-      token
+      token,
     };
   }
 }
