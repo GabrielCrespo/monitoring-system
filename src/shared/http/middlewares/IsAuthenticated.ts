@@ -3,6 +3,12 @@ import AppError from "@shared/errors/AppError";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 
+interface TokenPayload {
+  iat: number;
+  exp: number;
+  sub: string;
+}
+
 export default function isAuthenticated(
   request: Request,
   response: Response,
@@ -18,8 +24,15 @@ export default function isAuthenticated(
 
   try {
     const decodedToken = jwt.verify(token, auth.jwt.secret);
+
+    const { sub } = decodedToken as TokenPayload;
+
+    request.user = {
+      id: sub,
+    };
+
     return next();
   } catch (error) {
-      throw new AppError("O Token enviando é inválido");
+    throw new AppError("O Token enviando é inválido");
   }
 }
