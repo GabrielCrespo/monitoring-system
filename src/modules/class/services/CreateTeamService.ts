@@ -45,7 +45,9 @@ class CreateTeamService {
     );
 
     if (checkInexistentDayOfWeek.length) {
-      throw new AppError("Não foi possível encontrar algum dos dias da semana!");
+      throw new AppError(
+        "Não foi possível encontrar algum dos dias da semana!"
+      );
     }
 
     const team = classRepository.createTeam({
