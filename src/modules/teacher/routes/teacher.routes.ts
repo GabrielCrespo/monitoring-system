@@ -2,9 +2,15 @@ import isAuthenticated from "@shared/http/middlewares/IsAuthenticated";
 import { celebrate, Joi, Segments } from "celebrate";
 import { Router } from "express";
 import TeacherController from "../controllers/TeacherController";
+import multer from "multer";
+import uploadConfig from "@config/upload";
+import TeacherAvatarController from "../controllers/TeacherAvatarController";
 
 const teacherRouter = Router();
 const teacherController = new TeacherController();
+const teacherAvatarController = new TeacherAvatarController();
+
+const upload = multer(uploadConfig);
 
 teacherRouter.get("/", isAuthenticated, teacherController.index);
 teacherRouter.get(
@@ -53,6 +59,12 @@ teacherRouter.delete(
     },
   }),
   teacherController.delete
+);
+teacherRouter.patch(
+  "/avatar",
+  isAuthenticated,
+  upload.single("avatar"),
+  teacherAvatarController.update
 );
 
 export default teacherRouter;
