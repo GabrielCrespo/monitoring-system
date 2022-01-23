@@ -7,6 +7,15 @@ const studentRouter = Router();
 const studentController = new StudentController();
 
 studentRouter.get("/", studentController.index);
+studentRouter.get(
+  "/:id",
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+  }),
+  studentController.show
+);
 studentRouter.post(
   "/",
   celebrate({
