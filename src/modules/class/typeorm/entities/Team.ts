@@ -6,11 +6,12 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-
+import Student from "../../../student/typeorm/entities/Student";
 
 @Entity("turma")
 class Team {
@@ -26,10 +27,13 @@ class Team {
   @Column("time")
   hora_fim: Date;
 
-  @OneToOne(() => Teacher, teacher => teacher.turma)
+  @OneToOne(() => Teacher, (teacher) => teacher.turma)
   professor: Teacher;
 
-  @ManyToMany(() => DayOfWeek, {eager: true})
+  @OneToMany(() => Student, (student) => student.curso)
+  alunos: Student[];
+
+  @ManyToMany(() => DayOfWeek, { eager: true })
   @JoinTable()
   dias_da_semana: DayOfWeek[];
 
