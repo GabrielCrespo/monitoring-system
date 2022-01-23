@@ -5,6 +5,7 @@ import dayOfWeekRouter from "@modules/dayofweek/routes/dayofweek.routes";
 import teamRouter from "@modules/class/routes/team.routes";
 import teacherRouter from "@modules/teacher/routes/teacher.routes";
 import teacherSessionRouter from "@modules/teacher/routes/teacherSession.routes";
+import studentRouter from "@modules/student/routes/student.routes";
 
 const routes = Router();
 
@@ -13,6 +14,8 @@ routes.use("/role", rolesRouter);
 routes.use("/dayOfWeek", dayOfWeekRouter);
 routes.use("/team", teamRouter);
 routes.use("/teacher", teacherRouter);
+routes.use("/student", studentRouter);
+
 routes.use("/teacher-sessions", teacherSessionRouter);
 
 export default routes;
