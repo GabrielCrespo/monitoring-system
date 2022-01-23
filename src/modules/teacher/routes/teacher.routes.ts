@@ -15,6 +15,7 @@ const upload = multer(uploadConfig);
 teacherRouter.get("/", isAuthenticated, teacherController.index);
 teacherRouter.get(
   "/:id",
+  isAuthenticated,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.number().required(),
@@ -37,6 +38,7 @@ teacherRouter.post(
 );
 teacherRouter.put(
   "/:id",
+  isAuthenticated,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.number().required(),
@@ -53,6 +55,7 @@ teacherRouter.put(
 );
 teacherRouter.delete(
   "/:id",
+  isAuthenticated,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.number().required(),
