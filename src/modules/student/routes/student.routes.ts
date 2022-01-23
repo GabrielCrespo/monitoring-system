@@ -49,5 +49,13 @@ studentRouter.put(
   }),
   studentController.update
 );
-
+studentRouter.delete(
+  "/:id",
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+  }),
+  studentController.delete
+);
 export default studentRouter;

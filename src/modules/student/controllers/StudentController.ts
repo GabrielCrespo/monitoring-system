@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import CreateStudentService from "../services/CreateStudentService";
+import DeleteStudentService from "../services/DeleteStudentService";
 import ListStudentService from "../services/ListStudentService";
 import ShowStudentService from "../services/ShowStudentService";
 import UpdateStudentService from "../services/UpdateStudentService";
@@ -58,6 +59,15 @@ class StudentController {
     });
     return response.json(student);
   }
-}
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+    const deleteStudentService = new DeleteStudentService();
 
+    await deleteStudentService.execute({
+      id: Number.parseInt(id),
+    });
+
+    return response.json([]);
+  }
+}
 export default StudentController;
