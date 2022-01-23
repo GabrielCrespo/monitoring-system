@@ -6,6 +6,7 @@ import teamRouter from "@modules/class/routes/team.routes";
 import teacherRouter from "@modules/teacher/routes/teacher.routes";
 import teacherSessionRouter from "@modules/teacher/routes/teacherSession.routes";
 import studentRouter from "@modules/student/routes/student.routes";
+import studentSessionRouter from "@modules/student/routes/studentSession.routes";
 
 const routes = Router();
 
@@ -17,5 +18,6 @@ routes.use("/teacher", teacherRouter);
 routes.use("/student", studentRouter);
 
 routes.use("/teacher-sessions", teacherSessionRouter);
+routes.use("/student-sessions", studentSessionRouter);
 
 export default routes;

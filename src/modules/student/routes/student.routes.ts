@@ -1,3 +1,4 @@
+import isAuthenticated from "@shared/http/middlewares/IsAuthenticated";
 import { celebrate, Segments } from "celebrate";
 import { Router } from "express";
 import Joi from "joi";
@@ -6,9 +7,10 @@ import StudentController from "../controllers/StudentController";
 const studentRouter = Router();
 const studentController = new StudentController();
 
-studentRouter.get("/", studentController.index);
+studentRouter.get("/", isAuthenticated, studentController.index);
 studentRouter.get(
   "/:id",
+  isAuthenticated,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.number().required(),
@@ -33,6 +35,7 @@ studentRouter.post(
 );
 studentRouter.put(
   "/:id",
+  isAuthenticated,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.number().required(),
@@ -51,6 +54,7 @@ studentRouter.put(
 );
 studentRouter.delete(
   "/:id",
+  isAuthenticated,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.number().required(),
