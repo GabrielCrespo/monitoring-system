@@ -6,6 +6,7 @@ import StudentController from "../controllers/StudentController";
 const studentRouter = Router();
 const studentController = new StudentController();
 
+studentRouter.get("/", studentController.index);
 studentRouter.post(
   "/",
   celebrate({
