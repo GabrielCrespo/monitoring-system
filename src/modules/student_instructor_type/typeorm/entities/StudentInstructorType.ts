@@ -1,7 +1,9 @@
+import StudentInstructor from "../../../student_instructor/typeorm/entities/StudentInstructor";
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -13,6 +15,12 @@ class StudentInstructorType {
 
   @Column("varchar", { unique: true })
   descricao: string;
+
+  @OneToMany(
+    () => StudentInstructor,
+    (studentInstructor) => studentInstructor.funcao
+  )
+  alunos_instrutores: StudentInstructor[];
 
   @CreateDateColumn()
   created_at: Date;

@@ -1,4 +1,3 @@
-import Student from "../../../student/typeorm/entities/Student";
 import {
   Column,
   CreateDateColumn,
@@ -7,6 +6,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import StudentInstructor from "../../../student_instructor/typeorm/entities/StudentInstructor";
+import Student from "../../../student/typeorm/entities/Student";
 
 @Entity("curso")
 class Course {
@@ -18,6 +19,12 @@ class Course {
 
   @OneToMany(() => Student, (student) => student.curso)
   alunos: Student[];
+
+  @OneToMany(
+    () => StudentInstructor,
+    (studentInstructor) => studentInstructor.curso
+  )
+  alunos_instrutores: StudentInstructor[];
 
   @CreateDateColumn()
   created_at: Date;
