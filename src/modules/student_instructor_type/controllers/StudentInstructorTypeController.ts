@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import CreateStudentInstructorTypeService from "../services/CreateStudentInstructorTypeService";
+import DeleteStudentInstructorTypeService from "../services/DeleteStudentInstructorTypeService";
 import ListStudentInstructorTypeService from "../services/ListStudentInstructorTypeService";
 import ShowStudentInstructorTypeService from "../services/ShowStudentInstructorTypeService";
 import UpdateStudentInstructorTypeService from "../services/UpdateStudentInstructorTypeService";
@@ -52,6 +53,18 @@ class StudentInstructorTypeController {
         descricao,
       });
     return response.json(studentInstructorType);
+  }
+
+  public async delete(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+    const deleteStudentInstructorTypeService =
+      new DeleteStudentInstructorTypeService();
+
+    await deleteStudentInstructorTypeService.execute({
+      id: Number.parseInt(id),
+    });
+
+    return response.json([]);
   }
 }
 
