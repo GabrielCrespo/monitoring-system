@@ -32,24 +32,18 @@ studentInstructorTypeRouter.post(
   }),
   studentInstructorTypeController.create
 );
-// studentRouter.put(
-//   "/:id",
-//   celebrate({
-//     [Segments.PARAMS]: {
-//       id: Joi.number().required(),
-//     },
-//     [Segments.BODY]: {
-//       matricula: Joi.string().required(),
-//       nome: Joi.string().required(),
-//       data_de_nascimento: Joi.date().required(),
-//       email: Joi.string().email().required(),
-//       senha: Joi.string().required(),
-//       curso: Joi.required(),
-//       turma: Joi.required(),
-//     },
-//   }),
-//   studentController.update
-// );
+studentInstructorTypeRouter.put(
+  "/:id",
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+    [Segments.BODY]: {
+      descricao: Joi.string().required(),
+    },
+  }),
+  studentInstructorTypeController.update
+);
 // studentRouter.delete(
 //   "/:id",
 //   celebrate({
