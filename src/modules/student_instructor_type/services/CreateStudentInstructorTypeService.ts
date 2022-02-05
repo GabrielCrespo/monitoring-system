@@ -7,7 +7,7 @@ interface IRequest {
   descricao: string;
 }
 
-class CreateStudentInstructorType {
+class CreateStudentInstructorTypeService {
   public async execute({
     descricao,
   }: IRequest): Promise<StudentInstructorType> {
@@ -32,4 +32,4 @@ class CreateStudentInstructorType {
   }
 }
 
-export default CreateStudentInstructorType;
+export default CreateStudentInstructorTypeService;

@@ -7,6 +7,7 @@ import teacherRouter from "@modules/teacher/routes/teacher.routes";
 import teacherSessionRouter from "@modules/teacher/routes/teacherSession.routes";
 import studentRouter from "@modules/student/routes/student.routes";
 import studentSessionRouter from "@modules/student/routes/studentSession.routes";
+import studentInstructorTypeRouter from "@modules/student_instructor_type/routes/studentInstructorType.routes";
 
 const routes = Router();
 
@@ -16,6 +17,7 @@ routes.use("/dayOfWeek", dayOfWeekRouter);
 routes.use("/team", teamRouter);
 routes.use("/teacher", teacherRouter);
 routes.use("/student", studentRouter);
+routes.use("/student-instructor-type", studentInstructorTypeRouter);
 
 routes.use("/teacher-sessions", teacherSessionRouter);
 routes.use("/student-sessions", studentSessionRouter);
