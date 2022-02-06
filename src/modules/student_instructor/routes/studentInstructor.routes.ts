@@ -50,13 +50,13 @@ studentInstructorRouter.put(
   }),
   studentInstructorController.update
 );
-// studentInstructorRouter.delete(
-//   "/:id",
-//   celebrate({
-//     [Segments.PARAMS]: {
-//       id: Joi.number().required(),
-//     },
-//   }),
-//   studentInstructorTypeController.delete
-// );
+studentInstructorRouter.delete(
+  "/:id",
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+  }),
+  studentInstructorController.delete
+);
 export default studentInstructorRouter;
