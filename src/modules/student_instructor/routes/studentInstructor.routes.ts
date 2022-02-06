@@ -3,9 +3,11 @@ import { celebrate, Segments } from "celebrate";
 import { Router } from "express";
 import Joi from "joi";
 import StudentInstructorController from "../controllers/StudentInstructorController";
+import StudentInstructorRoleController from "../controllers/StudentInstructorRoleController";
 
 const studentInstructorRouter = Router();
 const studentInstructorController = new StudentInstructorController();
+const studentInstructorRoleController = new StudentInstructorRoleController();
 
 studentInstructorRouter.get("/", studentInstructorController.index);
 studentInstructorRouter.get(
@@ -58,5 +60,17 @@ studentInstructorRouter.delete(
     },
   }),
   studentInstructorController.delete
+);
+studentInstructorRouter.put(
+  "/role/:id",
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+    [Segments.BODY]: {
+      funcao: Joi.required(),
+    },
+  }),
+  studentInstructorRoleController.update
 );
 export default studentInstructorRouter;
