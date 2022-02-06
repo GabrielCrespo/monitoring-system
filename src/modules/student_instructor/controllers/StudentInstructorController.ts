@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import CreateStudentInstructorService from "../services/CreateStudentInstructorService";
 import ListStudentInstructorService from "../services/ListStudentInstructorService";
 import ShowStudentInstructorService from "../services/ShowStudentInstructorService";
+import UpdateStudentInstructorService from "../services/UpdateStudentInstructorService";
 
 class StudentInstructorController {
   public async index(request: Request, response: Response): Promise<Response> {
@@ -35,6 +36,32 @@ class StudentInstructorController {
     const createStudentInstructorService = new CreateStudentInstructorService();
 
     const studentInstructor = await createStudentInstructorService.execute({
+      matricula,
+      nome,
+      email,
+      senha,
+      data_de_nascimento,
+      tipo_aluno_instrutor,
+      curso,
+    });
+
+    return response.json(studentInstructor);
+  }
+  public async update(request: Request, response: Response): Promise<Response> {
+    const { id } = request.params;
+    const {
+      matricula,
+      nome,
+      email,
+      senha,
+      data_de_nascimento,
+      tipo_aluno_instrutor,
+      curso,
+    } = request.body;
+    const updateStudentInstructorService = new UpdateStudentInstructorService();
+
+    const studentInstructor = await updateStudentInstructorService.execute({
+      id: Number.parseInt(id),
       matricula,
       nome,
       email,
