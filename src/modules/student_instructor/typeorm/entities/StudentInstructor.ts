@@ -35,7 +35,7 @@ class StudentInstructor {
 
   @ManyToOne(
     () => StudentInstructorType,
-    (course) => course.alunos_instrutores,
+    (studentInstructorType) => studentInstructorType.alunos_instrutores,
     {
       eager: true,
       cascade: true,
