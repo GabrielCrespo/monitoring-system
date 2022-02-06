@@ -7,7 +7,7 @@ import StudentInstructorController from "../controllers/StudentInstructorControl
 const studentInstructorRouter = Router();
 const studentInstructorController = new StudentInstructorController();
 
-// studentInstructorRouter.get("/", studentInstructorTypeController.index);
+studentInstructorRouter.get("/", studentInstructorController.index);
 // studentInstructorRouter.get(
 //   "/:id",
 //   celebrate({

@@ -1,7 +1,15 @@
 import { Request, Response } from "express";
 import CreateStudentInstructorService from "../services/CreateStudentInstructorService";
+import ListStudentInstructorService from "../services/ListStudentInstructorService";
 
 class StudentInstructorController {
+  public async index(request: Request, response: Response): Promise<Response> {
+    const listStudentInstructorService = new ListStudentInstructorService();
+
+    const studentsInstructors = await listStudentInstructorService.execute();
+
+    return response.json(studentsInstructors);
+  }
   public async create(request: Request, response: Response): Promise<Response> {
     const {
       matricula,
