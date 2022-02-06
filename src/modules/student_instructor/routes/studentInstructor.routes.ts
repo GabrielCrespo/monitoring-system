@@ -8,15 +8,15 @@ const studentInstructorRouter = Router();
 const studentInstructorController = new StudentInstructorController();
 
 studentInstructorRouter.get("/", studentInstructorController.index);
-// studentInstructorRouter.get(
-//   "/:id",
-//   celebrate({
-//     [Segments.PARAMS]: {
-//       id: Joi.number().required(),
-//     },
-//   }),
-//   studentInstructorTypeController.show
-// );
+studentInstructorRouter.get(
+  "/:id",
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+  }),
+  studentInstructorController.show
+);
 studentInstructorRouter.post(
   "/",
   celebrate({
