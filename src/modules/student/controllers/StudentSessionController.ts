@@ -5,9 +5,9 @@ class StudentSessionController {
   public async create(request: Request, response: Response): Promise<Response> {
     const { email, senha } = request.body;
 
-    const studentTeacherSessionService = new CreateStudentSessionService();
+    const studentSessionService = new CreateStudentSessionService();
 
-    const user = await studentTeacherSessionService.execute({
+    const user = await studentSessionService.execute({
       email,
       senha,
     });
