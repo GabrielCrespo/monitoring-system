@@ -2,12 +2,20 @@
 import { celebrate, Segments } from "celebrate";
 import { Router } from "express";
 import Joi from "joi";
+import multer from "multer";
+import uploadConfig from "@config/upload";
 import StudentInstructorController from "../controllers/StudentInstructorController";
 import StudentInstructorRoleController from "../controllers/StudentInstructorRoleController";
+import StudentInstructorAvatarController from "../controllers/StudentInstructorAvatarController";
+import isAuthenticated from "@shared/http/middlewares/IsAuthenticated";
 
 const studentInstructorRouter = Router();
 const studentInstructorController = new StudentInstructorController();
 const studentInstructorRoleController = new StudentInstructorRoleController();
+const studentInstructorAvatarController =
+  new StudentInstructorAvatarController();
+
+const upload = multer(uploadConfig);
 
 studentInstructorRouter.get("/", studentInstructorController.index);
 studentInstructorRouter.get(
@@ -72,5 +80,11 @@ studentInstructorRouter.put(
     },
   }),
   studentInstructorRoleController.update
+);
+studentInstructorRouter.patch(
+  "/avatar",
+  isAuthenticated,
+  upload.single("avatar"),
+  studentInstructorAvatarController.update
 );
 export default studentInstructorRouter;
