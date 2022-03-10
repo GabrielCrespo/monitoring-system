@@ -10,8 +10,11 @@ import studentSessionRouter from "@modules/student/routes/studentSession.routes"
 import studentInstructorTypeRouter from "@modules/student_instructor_type/routes/studentInstructorType.routes";
 import studentInstructorRouter from "@modules/student_instructor/routes/studentInstructor.routes";
 import studentInstructorSessionRouter from "@modules/student_instructor/routes/studentInstructorSession.routes";
+import userTypeRouter from "@modules/user_type/routes/roles.routes";
 
 const routes = Router();
+
+routes.use("/user-type", userTypeRouter);
 
 routes.use("/course", courseRouter);
 routes.use("/role", rolesRouter);
