@@ -5,6 +5,7 @@ import User from "../entities/User";
 class UserRepository extends Repository<User> {
   public async findById(id: number): Promise<User | undefined> {
     const user = await this.findOne({
+      select: ["id", "email", "senha", "eh_admin", "tipo_usuario"],
       where: {
         id,
       },
