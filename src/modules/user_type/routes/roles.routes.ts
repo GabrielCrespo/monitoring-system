@@ -4,9 +4,9 @@ import Joi from "joi";
 import UserTypeController from "../controllers/UserTypeController";
 
 const userTypeRouter = Router();
-const rolesUserTypeController = new UserTypeController();
+const userTypeController = new UserTypeController();
 
-userTypeRouter.get("/", rolesUserTypeController.index);
+userTypeRouter.get("/", userTypeController.index);
 userTypeRouter.get(
   "/:id",
   celebrate({
@@ -14,7 +14,7 @@ userTypeRouter.get(
       id: Joi.number().required(),
     },
   }),
-  rolesUserTypeController.show
+  userTypeController.show
 );
 
 userTypeRouter.post(
@@ -24,7 +24,7 @@ userTypeRouter.post(
       descricao: Joi.string().required(),
     },
   }),
-  rolesUserTypeController.create
+  userTypeController.create
 );
 
 userTypeRouter.put(
@@ -37,7 +37,7 @@ userTypeRouter.put(
       descricao: Joi.string().required(),
     },
   }),
-  rolesUserTypeController.update
+  userTypeController.update
 );
 
 userTypeRouter.delete(
@@ -47,7 +47,7 @@ userTypeRouter.delete(
       id: Joi.number().required(),
     },
   }),
-  rolesUserTypeController.delete
+  userTypeController.delete
 );
 
 export default userTypeRouter;

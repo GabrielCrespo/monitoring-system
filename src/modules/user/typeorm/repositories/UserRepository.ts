@@ -22,6 +22,14 @@ class UserRepository extends Repository<User> {
 
     return user;
   }
+
+  public async getCustomUsersFields(): Promise<User[]> {
+    const users = await this.find({
+      select: ["id", "email", "senha", "eh_admin", "tipo_usuario"],
+    });
+
+    return users;
+  }
 }
 
 export default UserRepository;

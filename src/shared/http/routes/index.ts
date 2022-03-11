@@ -11,9 +11,11 @@ import studentInstructorTypeRouter from "@modules/student_instructor_type/routes
 import studentInstructorRouter from "@modules/student_instructor/routes/studentInstructor.routes";
 import studentInstructorSessionRouter from "@modules/student_instructor/routes/studentInstructorSession.routes";
 import userTypeRouter from "@modules/user_type/routes/roles.routes";
+import userRouter from "@modules/user/routes/user.routes";
 
 const routes = Router();
 
+routes.use("/user", userRouter);
 routes.use("/user-type", userTypeRouter);
 
 routes.use("/course", courseRouter);

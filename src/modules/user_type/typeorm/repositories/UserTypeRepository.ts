@@ -22,6 +22,14 @@ class UserTypeRepository extends Repository<UserType> {
     });
     return userType;
   }
+
+  public async getCustomUserTypesFields(): Promise<UserType[]> {
+    const userTypes = await this.find({
+      select: ["id", "descricao"],
+    });
+
+    return userTypes;
+  }
 }
 
 export default UserTypeRepository;
