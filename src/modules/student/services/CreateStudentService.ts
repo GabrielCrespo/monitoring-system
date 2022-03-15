@@ -39,13 +39,13 @@ class CreateStudentService {
     const registerExists = await studentRepository.findByRegister(matricula);
 
     if (registerExists) {
-      throw new AppError("Já há um aluno cadastrado com essa matrícula!");
+      throw new AppError("Matrícula já cadastrada!");
     }
 
     const emailExists = await userRepository.findByEmail(email);
 
     if (emailExists) {
-      throw new AppError("Já há um aluno cadastrado com esse e-mail!");
+      throw new AppError("E-mail já cadastrado!");
     }
 
     const courseExists = await courseRepository.findOne(curso.id);
