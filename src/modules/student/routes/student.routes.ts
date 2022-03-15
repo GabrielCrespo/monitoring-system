@@ -13,10 +13,9 @@ const studentAvatarController = new StudentAvatarController();
 
 const upload = multer(uploadConfig);
 
-studentRouter.get("/", isAuthenticated, studentController.index);
+studentRouter.get("/", studentController.index);
 studentRouter.get(
   "/:id",
-  isAuthenticated,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.number().required(),
@@ -60,7 +59,6 @@ studentRouter.put(
 );
 studentRouter.delete(
   "/:id",
-  isAuthenticated,
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.number().required(),

@@ -1,10 +1,13 @@
 import Team from "../../../class/typeorm/entities/Team";
 import Course from "../../../course/typeorm/entities/Course";
+import User from "../../../user/typeorm/entities/User";
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
@@ -19,12 +22,6 @@ class Student {
 
   @Column()
   nome: string;
-
-  @Column("varchar", { unique: true })
-  email: string;
-
-  @Column()
-  senha: string;
 
   @Column()
   data_de_nascimento: Date;
@@ -50,6 +47,10 @@ class Student {
     onDelete: "CASCADE",
   })
   turma: Team;
+
+  @OneToOne(() => User, (user) => user.aluno, { eager: true })
+  @JoinColumn()
+  usuario: User;
 
   @CreateDateColumn()
   created_at: Date;

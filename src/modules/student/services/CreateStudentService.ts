@@ -6,7 +6,9 @@ import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
 import Student from "../typeorm/entities/Student";
 import StudentRepository from "../typeorm/repositories/StudentRepository";
-import bcrypt from "bcrypt";
+import CreateUserService from "@modules/user/services/CreateUserService";
+import UserTypeRepository from "@modules/user_type/typeorm/repositories/UserTypeRepository";
+import UserRepository from "@modules/user/typeorm/repositories/UserRepository";
 
 interface IRequest {
   matricula: string;
@@ -31,6 +33,8 @@ class CreateStudentService {
     const studentRepository = getCustomRepository(StudentRepository);
     const courseRepository = getCustomRepository(CourseRepository);
     const teamRepository = getCustomRepository(TeamRepository);
+    const userRepository = getCustomRepository(UserRepository);
+    const userTypeRepository = getCustomRepository(UserTypeRepository);
 
     const registerExists = await studentRepository.findByRegister(matricula);
 
@@ -38,7 +42,7 @@ class CreateStudentService {
       throw new AppError("Já há um aluno cadastrado com essa matrícula!");
     }
 
-    const emailExists = await studentRepository.findByEmail(email);
+    const emailExists = await userRepository.findByEmail(email);
 
     if (emailExists) {
       throw new AppError("Já há um aluno cadastrado com esse e-mail!");
@@ -56,16 +60,21 @@ class CreateStudentService {
       throw new AppError("A turma escolhida não existe!");
     }
 
-    const hashedPassword = await bcrypt.hash(senha, 8);
+    const userType = await userTypeRepository.findByDescription("Aluno");
+
+    const user = await new CreateUserService().execute({
+      email,
+      senha,
+      tipo_usuario: userType!,
+    });
 
     const student = studentRepository.create({
       matricula,
       nome,
       data_de_nascimento,
-      email,
-      senha: hashedPassword,
       curso,
       turma,
+      usuario: user,
     });
 
     await studentRepository.save(student);
