@@ -3,8 +3,8 @@ import { getCustomRepository } from "typeorm";
 import bcrypt from "bcrypt";
 import { sign } from "jsonwebtoken";
 import auth from "@config/auth";
-import StudentRepository from "../typeorm/repositories/StudentRepository";
-import Student from "../typeorm/entities/Student";
+import UserRepository from "../typeorm/repositories/UserRepository";
+import User from "../typeorm/entities/User";
 
 interface IRequest {
   email: string;
@@ -12,24 +12,24 @@ interface IRequest {
 }
 
 interface IResponse {
-  aluno: Student;
+  usuario: User;
   token: string;
 }
 
-class CreateStudentSessionService {
+class CreateUserSessionService {
   public async execute({ email, senha }: IRequest): Promise<IResponse> {
-    const studentRepository = getCustomRepository(StudentRepository);
+    const userRepository = getCustomRepository(UserRepository);
 
-    const student = await studentRepository.findByEmail(email);
+    const user = await userRepository.findByEmail(email);
 
-    if (!student) {
+    if (!user) {
       throw new AppError(
         "A combinação entre e-mail e senha está incorreta!",
         401
       );
     }
 
-    const confirmedPassword = await bcrypt.compare(senha, student.senha);
+    const confirmedPassword = await bcrypt.compare(senha, user.senha);
 
     if (!confirmedPassword) {
       throw new AppError(
@@ -39,15 +39,15 @@ class CreateStudentSessionService {
     }
 
     const token = sign({}, auth.jwt.secret, {
-      subject: student.id.toString(),
+      subject: user.id.toString(),
       expiresIn: auth.jwt.expiresIn,
     });
 
     return {
-      aluno: student,
+      usuario: user,
       token,
     };
   }
 }
 
-export default CreateStudentSessionService;
+export default CreateUserSessionService;
