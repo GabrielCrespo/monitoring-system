@@ -7,6 +7,7 @@ import { getCustomRepository } from "typeorm";
 import Student from "../typeorm/entities/Student";
 import StudentRepository from "../typeorm/repositories/StudentRepository";
 import bcrypt from "bcrypt";
+import UserRepository from "@modules/user/typeorm/repositories/UserRepository";
 
 interface IRequest {
   id: number;
@@ -33,6 +34,7 @@ class UpdateStudentService {
     const studentRepository = getCustomRepository(StudentRepository);
     const courseRepository = getCustomRepository(CourseRepository);
     const teamRepository = getCustomRepository(TeamRepository);
+    const userRepository = getCustomRepository(UserRepository);
 
     const student = await studentRepository.findById(id);
 
@@ -43,13 +45,13 @@ class UpdateStudentService {
     const registerExists = await studentRepository.findByRegister(matricula);
 
     if (registerExists && student.matricula !== matricula) {
-      throw new AppError("Já há um aluno cadastrado com essa matrícula!");
+      throw new AppError("Matrícula já cadastrada!");
     }
 
-    const emailExists = await studentRepository.findByEmail(email);
+    const emailExists = await userRepository.findByEmail(email);
 
-    if (emailExists && student.email !== email) {
-      throw new AppError("Já há um aluno cadastrado com esse email!");
+    if (emailExists && student.usuario.email !== email) {
+      throw new AppError("Email já cadastrado!");
     }
 
     const courseExists = await courseRepository.findOne(curso.id);
@@ -69,8 +71,8 @@ class UpdateStudentService {
     student.matricula = matricula;
     student.nome = nome;
     student.data_de_nascimento = data_de_nascimento;
-    student.email = email;
-    student.senha = hashedSenha;
+    student.usuario.email = email;
+    student.usuario.senha = hashedSenha;
     student.curso = curso;
     student.turma = turma;
 
