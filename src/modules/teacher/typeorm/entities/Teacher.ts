@@ -1,3 +1,5 @@
+import User from "../../../user/typeorm/entities/User";
+import Team from "../../../class/typeorm/entities/Team";
 import {
   Column,
   CreateDateColumn,
@@ -9,9 +11,6 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import Team from "../../../class/typeorm/entities/Team";
-import Role from "../../../roles/typeorm/entities/Role";
-
 @Entity("professor")
 class Teacher {
   @PrimaryGeneratedColumn()
@@ -20,21 +19,16 @@ class Teacher {
   @Column()
   nome: string;
 
-  @Column("varchar", { unique: true })
-  email: string;
-
-  @Column()
-  senha: string;
-
   @Column("varchar", { nullable: true })
   avatar: string;
 
-  @ManyToOne(() => Role, (role) => role.professor, { eager: true })
-  funcao: Role;
-
-  @OneToOne(() => Team, turma => turma.professor,  { eager: true, })
+  @OneToOne(() => Team, (turma) => turma.professor, { eager: true })
   @JoinColumn()
   turma: Team;
+
+  @OneToOne(() => User, (user) => user.professor, { eager: true })
+  @JoinColumn()
+  usuario: User;
 
   @Column({ default: true })
   ativo: boolean;

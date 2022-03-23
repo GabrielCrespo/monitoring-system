@@ -1,18 +1,17 @@
 import Team from "@modules/class/typeorm/entities/Team";
-import Role from "@modules/roles/typeorm/entities/Role";
 import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
 import Teacher from "../typeorm/entities/Teacher";
 import TeacherRepository from "../typeorm/repositories/TeacherRepository";
-import bcrypt from "bcrypt";
-import RolesRepository from "@modules/roles/typeorm/repositories/RolesRepository";
 import TeamRepository from "@modules/class/typeorm/repositories/TeamRepository";
+import UserTypeRepository from "@modules/user_type/typeorm/repositories/UserTypeRepository";
+import UserRepository from "@modules/user/typeorm/repositories/UserRepository";
+import CreateUserService from "@modules/user/services/CreateUserService";
 
 interface IRequest {
   nome: string;
   email: string;
   senha: string;
-  funcao: Role;
   turma: Team;
 }
 
@@ -21,14 +20,14 @@ class CreateTeacherService {
     nome,
     email,
     senha,
-    funcao,
     turma,
   }: IRequest): Promise<Teacher> {
     const teacherRepository = getCustomRepository(TeacherRepository);
-    const roleRepository = getCustomRepository(RolesRepository);
     const teamRepository = getCustomRepository(TeamRepository);
+    const userRepository = getCustomRepository(UserRepository);
+    const userTypeRepository = getCustomRepository(UserTypeRepository);
 
-    const emailExists = await teacherRepository.findByEmail(email);
+    const emailExists = await userRepository.findByEmail(email);
 
     if (emailExists) {
       throw new AppError("O email já está cadastrado!");
@@ -40,26 +39,24 @@ class CreateTeacherService {
       throw new AppError("Já há um professor cadastrado para essa turma!");
     }
 
-    const roleExists = await roleRepository.findById(funcao.id);
-
-    if (!roleExists) {
-      throw new AppError("Não foi possível encontrar a função");
-    }
-
     const teamExists = await teamRepository.findById(turma.id);
 
     if (!teamExists) {
       throw new AppError("Não foi possível encontrar a turma");
     }
 
-    const senhaHash = await bcrypt.hash(senha, 8);
+    const userType = await userTypeRepository.findByDescription("Professor");
+
+    const user = await new CreateUserService().execute({
+      email,
+      senha,
+      tipo_usuario: userType!,
+    });
 
     const teacher = teacherRepository.create({
       nome,
-      email,
-      senha: senhaHash,
-      funcao,
       turma,
+      usuario: user,
     });
 
     await teacherRepository.save(teacher);

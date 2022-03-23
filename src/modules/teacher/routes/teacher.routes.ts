@@ -12,7 +12,7 @@ const teacherAvatarController = new TeacherAvatarController();
 
 const upload = multer(uploadConfig);
 
-teacherRouter.get("/", isAuthenticated, teacherController.index);
+teacherRouter.get("/", teacherController.index);
 teacherRouter.get(
   "/:id",
   isAuthenticated,
@@ -30,7 +30,6 @@ teacherRouter.post(
       nome: Joi.string().required(),
       email: Joi.string().email().required(),
       senha: Joi.string().required(),
-      funcao: Joi.required(),
       turma: Joi.required(),
     },
   }),
@@ -47,7 +46,6 @@ teacherRouter.put(
       nome: Joi.string().required(),
       email: Joi.string().email().required(),
       senha: Joi.string().required(),
-      funcao: Joi.required(),
       turma: Joi.required(),
     },
   }),

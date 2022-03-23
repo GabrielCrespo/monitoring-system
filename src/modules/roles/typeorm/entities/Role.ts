@@ -7,7 +7,6 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-import Teacher from "../../../teacher/typeorm/entities/Teacher";
 import StudentInstructor from "../../../student_instructor/typeorm/entities/StudentInstructor";
 
 @Entity("funcao")
@@ -17,9 +16,6 @@ class Role {
 
   @Column()
   descricao: string;
-
-  @OneToMany(() => Teacher, (teacher) => teacher.funcao)
-  professor: Teacher[];
 
   @OneToMany(
     () => StudentInstructor,
