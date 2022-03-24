@@ -5,19 +5,13 @@ import { sign } from "jsonwebtoken";
 import auth from "@config/auth";
 import UserRepository from "../typeorm/repositories/UserRepository";
 import User from "../typeorm/entities/User";
-
 interface IRequest {
   email: string;
   senha: string;
 }
 
-interface IResponse {
-  usuario: User;
-  token: string;
-}
-
 class CreateUserSessionService {
-  public async execute({ email, senha }: IRequest): Promise<IResponse> {
+  public async execute({ email, senha }: IRequest): Promise<string> {
     const userRepository = getCustomRepository(UserRepository);
 
     const user = await userRepository.findByEmail(email);
@@ -38,15 +32,18 @@ class CreateUserSessionService {
       );
     }
 
-    const token = sign({}, auth.jwt.secret, {
+    const userPayload: Partial<User> = {
+      id: user.id,
+      eh_admin: user.eh_admin,
+      email: user.email,
+    };
+
+    const token = sign(userPayload, auth.jwt.secret, {
       subject: user.id.toString(),
       expiresIn: auth.jwt.expiresIn,
     });
 
-    return {
-      usuario: user,
-      token,
-    };
+    return token;
   }
 }
 
