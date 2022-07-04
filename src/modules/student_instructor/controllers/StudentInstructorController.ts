@@ -29,9 +29,13 @@ class StudentInstructorController {
       nome,
       email,
       senha,
+      tipo_instrutor,
+      idade,
+      telefone,
+      ehCotista,
       data_de_nascimento,
-      tipo_aluno_instrutor,
       curso,
+      genero,
     } = request.body;
 
     const createStudentInstructorService = new CreateStudentInstructorService();
@@ -41,9 +45,13 @@ class StudentInstructorController {
       nome,
       email,
       senha,
+      telefone,
+      idade,
+      tipo_instrutor,
+      ehCotista,
       data_de_nascimento,
-      tipo_aluno_instrutor,
       curso,
+      genero,
     });
 
     return response.json(studentInstructor);
@@ -55,9 +63,13 @@ class StudentInstructorController {
       nome,
       email,
       senha,
+      telefone,
+      idade,
+      tipo_instrutor,
+      ehCotista,
       data_de_nascimento,
-      tipo_aluno_instrutor,
       curso,
+      genero,
     } = request.body;
     const updateStudentInstructorService = new UpdateStudentInstructorService();
 
@@ -67,9 +79,13 @@ class StudentInstructorController {
       nome,
       email,
       senha,
+      telefone,
+      idade,
+      tipo_instrutor,
+      ehCotista,
       data_de_nascimento,
-      tipo_aluno_instrutor,
       curso,
+      genero,
     });
 
     return response.json(studentInstructor);

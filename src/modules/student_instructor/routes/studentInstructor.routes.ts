@@ -5,13 +5,11 @@ import Joi from "joi";
 import multer from "multer";
 import uploadConfig from "@config/upload";
 import StudentInstructorController from "../controllers/StudentInstructorController";
-import StudentInstructorRoleController from "../controllers/StudentInstructorRoleController";
 import StudentInstructorAvatarController from "../controllers/StudentInstructorAvatarController";
 import isAuthenticated from "@shared/http/middlewares/IsAuthenticated";
 
 const studentInstructorRouter = Router();
 const studentInstructorController = new StudentInstructorController();
-const studentInstructorRoleController = new StudentInstructorRoleController();
 const studentInstructorAvatarController =
   new StudentInstructorAvatarController();
 
@@ -35,9 +33,13 @@ studentInstructorRouter.post(
       nome: Joi.string().required(),
       email: Joi.string().required(),
       senha: Joi.string().required(),
+      telefone: Joi.string().required(),
+      idade: Joi.number().required(),
+      ehCotista: Joi.boolean().required(),
       data_de_nascimento: Joi.date().required(),
-      tipo_aluno_instrutor: Joi.required(),
+      tipo_instrutor: Joi.required(),
       curso: Joi.required(),
+      genero: Joi.required(),
     },
   }),
   studentInstructorController.create
@@ -53,9 +55,13 @@ studentInstructorRouter.put(
       nome: Joi.string().required(),
       email: Joi.string().required(),
       senha: Joi.string().required(),
+      telefone: Joi.string().required(),
+      idade: Joi.number().required(),
+      ehCotista: Joi.boolean().required(),
       data_de_nascimento: Joi.date().required(),
-      tipo_aluno_instrutor: Joi.required(),
+      tipo_instrutor: Joi.required(),
       curso: Joi.required(),
+      genero: Joi.required(),
     },
   }),
   studentInstructorController.update
@@ -68,18 +74,6 @@ studentInstructorRouter.delete(
     },
   }),
   studentInstructorController.delete
-);
-studentInstructorRouter.put(
-  "/role/:id",
-  celebrate({
-    [Segments.PARAMS]: {
-      id: Joi.number().required(),
-    },
-    [Segments.BODY]: {
-      funcao: Joi.required(),
-    },
-  }),
-  studentInstructorRoleController.update
 );
 studentInstructorRouter.patch(
   "/avatar",

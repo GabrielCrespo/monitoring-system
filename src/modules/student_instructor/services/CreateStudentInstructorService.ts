@@ -1,23 +1,27 @@
 import Course from "@modules/course/typeorm/entities/Course";
 import CourseRepository from "@modules/course/typeorm/repositories/CourseRepository";
-import Role from "@modules/roles/typeorm/entities/Role";
-import RolesRepository from "@modules/roles/typeorm/repositories/RolesRepository";
-import StudentInstructorType from "@modules/student_instructor_type/typeorm/entities/StudentInstructorType";
-import StudentInstructorTypeRepository from "@modules/student_instructor_type/typeorm/repositories/StudentInstructorTypeRepository";
 import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
 import StudentInstructor from "../typeorm/entities/StudentInstructor";
 import StudentInstructorRepository from "../typeorm/repositories/StudentInstructorRepository";
-import bcrypt from "bcrypt";
+import Gender from "@modules/gender/typeorm/entities/Gender";
+import UserRepository from "@modules/user/typeorm/repositories/UserRepository";
+import UserTypeRepository from "@modules/user_type/typeorm/repositories/UserTypeRepository";
+import CreateUserService from "@modules/user/services/CreateUserService";
+import GenderRepository from "@modules/gender/typeorm/repository/GenderRepository";
 
 interface IRequest {
   matricula: string;
   nome: string;
   email: string;
   senha: string;
+  telefone: string;
+  idade: number;
+  tipo_instrutor: string;
+  ehCotista: boolean;
   data_de_nascimento: Date;
-  tipo_aluno_instrutor: StudentInstructorType;
   curso: Course;
+  genero: Gender;
 }
 
 class CreateStudentInstructorService {
@@ -26,18 +30,21 @@ class CreateStudentInstructorService {
     nome,
     email,
     senha,
+    telefone,
+    idade,
+    tipo_instrutor,
+    ehCotista,
     data_de_nascimento,
-    tipo_aluno_instrutor,
     curso,
+    genero,
   }: IRequest): Promise<StudentInstructor> {
     const studentInstructorRepository = getCustomRepository(
       StudentInstructorRepository
     );
-    const studentInstructorTypeRepository = getCustomRepository(
-      StudentInstructorTypeRepository
-    );
     const courseRepository = getCustomRepository(CourseRepository);
-    const roleRepository = getCustomRepository(RolesRepository);
+    const userRepository = getCustomRepository(UserRepository);
+    const userTypeRepository = getCustomRepository(UserTypeRepository);
+    const generoRepository = getCustomRepository(GenderRepository);
 
     const registerExists = await studentInstructorRepository.findByRegister(
       matricula
@@ -45,25 +52,14 @@ class CreateStudentInstructorService {
 
     if (registerExists) {
       throw new AppError(
-        "Já há um aluno instrutor cadastrado com essa matrícula!"
+        "Já há um monitor/tutor cadastrado com essa matrícula!"
       );
     }
 
-    const emailExists = await studentInstructorRepository.findByEmail(email);
+    const emailExists = await userRepository.findByEmail(email);
 
     if (emailExists) {
-      throw new AppError(
-        "Já há um aluno instrutor cadastrado com esse e-mail!"
-      );
-    }
-
-    const studentInstructorTypeExists =
-      await studentInstructorTypeRepository.findById(tipo_aluno_instrutor.id);
-
-    if (!studentInstructorTypeExists) {
-      throw new AppError(
-        "Não foi possível encontrar o tipo de aluno instrutor!"
-      );
+      throw new AppError("Já há um usuário cadastrado com esse e-mail!");
     }
 
     const courseExists = await courseRepository.findOne(curso.id);
@@ -72,24 +68,31 @@ class CreateStudentInstructorService {
       throw new AppError("Não foi possível encontrar o curso!");
     }
 
-    // const roleExists = await roleRepository.findById(funcao.id);
+    const generoExists = await generoRepository.findById(genero.id);
 
-    // if (!roleExists) {
-    //   throw new AppError("Não foi possível encontrar a função!");
-    // }
+    if (!generoExists) {
+      throw new AppError("Não foi possível encontrar o gênero!");
+    }
 
-    const senhaHashed = await bcrypt.hash(senha, 8);
-    const standardRole = await roleRepository.findByDescription("Normal");
+    const userType = await userTypeRepository.findByDescription(tipo_instrutor);
+
+    const usuario = await new CreateUserService().execute({
+      email,
+      senha,
+      tipo_usuario: userType!,
+    });
 
     const studentInstructor = studentInstructorRepository.create({
       matricula,
       nome,
-      email,
-      senha: senhaHashed,
+      telefone,
+      tipo_instrutor,
+      ehCotista,
+      idade,
       data_de_nascimento,
-      tipo_aluno_instrutor,
       curso,
-      funcao: standardRole,
+      genero,
+      usuario,
     });
 
     await studentInstructorRepository.save(studentInstructor);

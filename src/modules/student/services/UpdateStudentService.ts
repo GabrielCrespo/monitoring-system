@@ -8,6 +8,8 @@ import Student from "../typeorm/entities/Student";
 import StudentRepository from "../typeorm/repositories/StudentRepository";
 import bcrypt from "bcrypt";
 import UserRepository from "@modules/user/typeorm/repositories/UserRepository";
+import Gender from "@modules/gender/typeorm/entities/Gender";
+import GenderRepository from "@modules/gender/typeorm/repository/GenderRepository";
 
 interface IRequest {
   id: number;
@@ -16,8 +18,12 @@ interface IRequest {
   data_de_nascimento: Date;
   email: string;
   senha: string;
+  telefone: string;
+  idade: number;
+  ehCotista: boolean;
   curso: Course;
   turma: Team;
+  genero: Gender;
 }
 
 class UpdateStudentService {
@@ -28,13 +34,18 @@ class UpdateStudentService {
     data_de_nascimento,
     email,
     senha,
+    idade,
+    telefone,
+    ehCotista,
     curso,
     turma,
+    genero,
   }: IRequest): Promise<Student> {
     const studentRepository = getCustomRepository(StudentRepository);
     const courseRepository = getCustomRepository(CourseRepository);
     const teamRepository = getCustomRepository(TeamRepository);
     const userRepository = getCustomRepository(UserRepository);
+    const genderRepository = getCustomRepository(GenderRepository);
 
     const student = await studentRepository.findById(id);
 
@@ -66,6 +77,12 @@ class UpdateStudentService {
       throw new AppError("A turma escolhida não existe!");
     }
 
+    const genderExist = await genderRepository.findById(genero.id);
+
+    if (!genderExist) {
+      throw new AppError("A gênero escolhido não existe!");
+    }
+
     const hashedSenha = await bcrypt.hash(senha, 8);
 
     student.matricula = matricula;
@@ -73,8 +90,12 @@ class UpdateStudentService {
     student.data_de_nascimento = data_de_nascimento;
     student.usuario.email = email;
     student.usuario.senha = hashedSenha;
+    student.idade = idade;
+    student.telefone = telefone;
+    student.ehCotista = ehCotista;
     student.curso = curso;
     student.turma = turma;
+    student.genero = genero;
 
     await studentRepository.save(student);
 

@@ -25,8 +25,19 @@ class StudentController {
     return response.json(student);
   }
   public async create(request: Request, response: Response): Promise<Response> {
-    const { matricula, nome, data_de_nascimento, email, senha, curso, turma } =
-      request.body;
+    const {
+      matricula,
+      nome,
+      data_de_nascimento,
+      email,
+      senha,
+      telefone,
+      idade,
+      ehCotista,
+      curso,
+      turma,
+      genero,
+    } = request.body;
     const createStudentService = new CreateStudentService();
 
     const student = await createStudentService.execute({
@@ -35,6 +46,10 @@ class StudentController {
       data_de_nascimento,
       email,
       senha,
+      telefone,
+      idade,
+      ehCotista,
+      genero,
       curso,
       turma,
     });
@@ -43,8 +58,19 @@ class StudentController {
 
   public async update(request: Request, response: Response): Promise<Response> {
     const { id } = request.params;
-    const { matricula, nome, data_de_nascimento, email, senha, curso, turma } =
-      request.body;
+    const {
+      matricula,
+      nome,
+      data_de_nascimento,
+      email,
+      senha,
+      idade,
+      telefone,
+      ehCotista,
+      curso,
+      turma,
+      genero,
+    } = request.body;
     const updateStudentService = new UpdateStudentService();
 
     const student = await updateStudentService.execute({
@@ -54,8 +80,12 @@ class StudentController {
       data_de_nascimento,
       email,
       senha,
+      idade,
+      telefone,
+      ehCotista,
       curso,
       turma,
+      genero,
     });
     return response.json(student);
   }

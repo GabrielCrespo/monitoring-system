@@ -1,4 +1,6 @@
+import Student from "../../../student/typeorm/entities/Student";
 import StudentInstructor from "../../../student_instructor/typeorm/entities/StudentInstructor";
+
 import {
   Column,
   CreateDateColumn,
@@ -8,19 +10,19 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity("tipo_aluno_instrutor")
-class StudentInstructorType {
+@Entity("genero")
+class Gender {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column("varchar", { unique: true })
+  @Column()
   descricao: string;
 
-  @OneToMany(
-    () => StudentInstructor,
-    (studentInstructor) => studentInstructor.funcao
-  )
-  alunos_instrutores: StudentInstructor[];
+  @OneToMany(() => Student, (student) => student.genero)
+  alunos: Student[];
+
+  @OneToMany(() => StudentInstructor, (instructor) => instructor.genero)
+  instrutores: StudentInstructor[];
 
   @CreateDateColumn()
   created_at: Date;
@@ -29,4 +31,4 @@ class StudentInstructorType {
   updated_at: Date;
 }
 
-export default StudentInstructorType;
+export default Gender;

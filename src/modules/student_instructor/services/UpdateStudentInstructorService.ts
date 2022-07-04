@@ -1,12 +1,14 @@
 import Course from "@modules/course/typeorm/entities/Course";
 import CourseRepository from "@modules/course/typeorm/repositories/CourseRepository";
-import StudentInstructorType from "@modules/student_instructor_type/typeorm/entities/StudentInstructorType";
-import StudentInstructorTypeRepository from "@modules/student_instructor_type/typeorm/repositories/StudentInstructorTypeRepository";
 import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
 import StudentInstructorRepository from "../typeorm/repositories/StudentInstructorRepository";
-import bcrypt from "bcrypt";
 import StudentInstructor from "../typeorm/entities/StudentInstructor";
+import Gender from "@modules/gender/typeorm/entities/Gender";
+import UserRepository from "@modules/user/typeorm/repositories/UserRepository";
+import GenderRepository from "@modules/gender/typeorm/repository/GenderRepository";
+import UpdateUserService from "@modules/user/services/UpdateUserService";
+import UserTypeRepository from "@modules/user_type/typeorm/repositories/UserTypeRepository";
 
 interface IRequest {
   id: number;
@@ -14,9 +16,13 @@ interface IRequest {
   nome: string;
   email: string;
   senha: string;
+  idade: number;
+  telefone: string;
+  tipo_instrutor: string;
+  ehCotista: boolean;
   data_de_nascimento: Date;
-  tipo_aluno_instrutor: StudentInstructorType;
   curso: Course;
+  genero: Gender;
 }
 
 class UpdateStudentInstructorService {
@@ -26,22 +32,27 @@ class UpdateStudentInstructorService {
     nome,
     email,
     senha,
+    idade,
+    telefone,
+    tipo_instrutor,
+    ehCotista,
     data_de_nascimento,
-    tipo_aluno_instrutor,
     curso,
+    genero,
   }: IRequest): Promise<StudentInstructor> {
     const studentInstructorRepository = getCustomRepository(
       StudentInstructorRepository
     );
-    const studentInstructorTypeRepository = getCustomRepository(
-      StudentInstructorTypeRepository
-    );
+
     const courseRepository = getCustomRepository(CourseRepository);
+    const userRepository = getCustomRepository(UserRepository);
+    const userTypeRepository = getCustomRepository(UserTypeRepository);
+    const generoRepository = getCustomRepository(GenderRepository);
 
     const studentInstructor = await studentInstructorRepository.findById(id);
 
     if (!studentInstructor) {
-      throw new AppError("O aluno instrutor não foi encontrado!");
+      throw new AppError("O monitor/tutor não foi encontrado!");
     }
 
     const registerExists = await studentInstructorRepository.findByRegister(
@@ -50,24 +61,14 @@ class UpdateStudentInstructorService {
 
     if (registerExists && studentInstructor.matricula != matricula) {
       throw new AppError(
-        "Já há um aluno instrutor cadastrado com essa matrícula!"
+        "Já há um monitor/tutor cadastrado com essa matrícula!"
       );
     }
 
-    const emailExists = await studentInstructorRepository.findByEmail(email);
+    const emailExists = await userRepository.findByEmail(email);
 
-    if (emailExists && studentInstructor.email != email) {
-      throw new AppError(
-        "Já há um aluno instrutor cadastrado com esse e-mail!"
-      );
-    }
-    const studentInstructorTypeExists =
-      await studentInstructorTypeRepository.findById(tipo_aluno_instrutor.id);
-
-    if (!studentInstructorTypeExists) {
-      throw new AppError(
-        "Não foi possível encontrar o tipo de aluno instrutor!"
-      );
+    if (emailExists && studentInstructor.usuario.email != email) {
+      throw new AppError("Já há um monitor/tutor cadastrado com esse e-mail!");
     }
 
     const courseExists = await courseRepository.findOne(curso.id);
@@ -76,15 +77,31 @@ class UpdateStudentInstructorService {
       throw new AppError("Não foi possível encontrar o curso!");
     }
 
-    const senhaHashed = await bcrypt.hash(senha, 8);
+    const generoExists = await generoRepository.findById(genero.id);
+
+    if (!generoExists) {
+      throw new AppError("Não foi possível encontrar o gênero!");
+    }
+
+    const userType = await userTypeRepository.findByDescription(tipo_instrutor);
+
+    const user = await new UpdateUserService().execute({
+      id: studentInstructor.usuario.id,
+      email,
+      senha,
+      eh_admin: studentInstructor.usuario.eh_admin,
+      tipo_usuario: userType!,
+    });
 
     studentInstructor.matricula = matricula;
     studentInstructor.nome = nome;
-    studentInstructor.email = email;
-    studentInstructor.senha = senhaHashed;
+    studentInstructor.telefone = telefone;
+    studentInstructor.ehCotista = ehCotista;
+    studentInstructor.idade = idade;
+    studentInstructor.genero = genero;
     studentInstructor.data_de_nascimento = data_de_nascimento;
-    studentInstructor.tipo_aluno_instrutor = tipo_aluno_instrutor;
     studentInstructor.curso = curso;
+    studentInstructor.usuario = user;
 
     await studentInstructorRepository.save(studentInstructor);
 

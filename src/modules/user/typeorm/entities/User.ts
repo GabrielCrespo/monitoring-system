@@ -1,6 +1,7 @@
 import UserType from "../../../user_type/typeorm/entities/UserType";
 import Student from "../../../student/typeorm/entities/Student";
 import Teacher from "../../../teacher/typeorm/entities/Teacher";
+import StudentInstructor from "../../../student_instructor/typeorm/entities/StudentInstructor";
 import {
   Column,
   CreateDateColumn,
@@ -38,6 +39,13 @@ class User {
     onDelete: "CASCADE",
   })
   aluno: Student;
+
+  @OneToOne(() => StudentInstructor, (instructor) => instructor.usuario, {
+    cascade: true,
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
+  })
+  instrutor: StudentInstructor;
 
   @OneToOne(() => Teacher, (teacher) => teacher.usuario, {
     cascade: true,

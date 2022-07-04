@@ -1,19 +1,19 @@
 import Team from "@modules/class/typeorm/entities/Team";
-import Role from "@modules/roles/typeorm/entities/Role";
 import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
 import Teacher from "../typeorm/entities/Teacher";
 import TeacherRepository from "../typeorm/repositories/TeacherRepository";
 import bcrypt from "bcrypt";
-import RolesRepository from "@modules/roles/typeorm/repositories/RolesRepository";
 import TeamRepository from "@modules/class/typeorm/repositories/TeamRepository";
+import UserRepository from "@modules/user/typeorm/repositories/UserRepository";
+import UserTypeRepository from "@modules/user_type/typeorm/repositories/UserTypeRepository";
+import UpdateUserService from "@modules/user/services/UpdateUserService";
 
 interface IRequest {
   id: number;
   nome: string;
   email: string;
   senha: string;
-  funcao: Role;
   turma: Team;
 }
 
@@ -23,12 +23,12 @@ class UpdateTeacherService {
     nome,
     email,
     senha,
-    funcao,
     turma,
   }: IRequest): Promise<Teacher> {
     const teacherRepository = getCustomRepository(TeacherRepository);
-    const roleRepository = getCustomRepository(RolesRepository);
     const teamRepository = getCustomRepository(TeamRepository);
+    const userRepository = getCustomRepository(UserRepository);
+    const userTypeRepository = getCustomRepository(UserTypeRepository);
 
     const teacher = await teacherRepository.findById(id);
 
@@ -36,9 +36,9 @@ class UpdateTeacherService {
       throw new AppError("Professor não encontrado!");
     }
 
-    const emailExists = await teacherRepository.findByEmail(email);
+    const emailExists = await userRepository.findByEmail(email);
 
-    if (emailExists && teacher.email != email) {
+    if (emailExists && teacher.usuario.email != email) {
       throw new AppError("O email já está cadastrado!");
     }
 
@@ -48,24 +48,24 @@ class UpdateTeacherService {
       throw new AppError("Já há um professor cadastrado para essa turma!");
     }
 
-    const roleExists = await roleRepository.findById(funcao.id);
-
-    if (!roleExists) {
-      throw new AppError("Não foi possível encontrar a função");
-    }
-
     const teamExists = await teamRepository.findById(turma.id);
 
     if (!teamExists) {
       throw new AppError("Não foi possível encontrar a turma");
     }
 
-    const hashedSenha = await bcrypt.hash(senha, 8);
+    const userType = await userTypeRepository.findByDescription("Professor");
+
+    const user = await new UpdateUserService().execute({
+      id: teacher.usuario.id,
+      email,
+      senha,
+      eh_admin: teacher.usuario.eh_admin,
+      tipo_usuario: userType!,
+    });
 
     teacher.nome = nome;
-    teacher.email = email;
-    teacher.senha = hashedSenha;
-    teacher.funcao = funcao;
+    teacher.usuario = user;
     teacher.turma = turma;
 
     await teacherRepository.save(teacher);

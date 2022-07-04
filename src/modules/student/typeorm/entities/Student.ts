@@ -1,6 +1,8 @@
+import Gender from "../../../gender/typeorm/entities/Gender";
 import Team from "../../../class/typeorm/entities/Team";
 import Course from "../../../course/typeorm/entities/Course";
 import User from "../../../user/typeorm/entities/User";
+
 import {
   Column,
   CreateDateColumn,
@@ -23,6 +25,9 @@ class Student {
   @Column()
   nome: string;
 
+  @Column("varchar", { nullable: true })
+  telefone: string;
+
   @Column()
   data_de_nascimento: Date;
 
@@ -31,6 +36,12 @@ class Student {
 
   @Column({ default: true })
   ativo: boolean;
+
+  @Column({ default: false })
+  ehCotista: boolean;
+
+  @Column()
+  idade: number;
 
   @ManyToOne(() => Course, (course) => course.alunos, {
     eager: true,
@@ -47,6 +58,14 @@ class Student {
     onDelete: "CASCADE",
   })
   turma: Team;
+
+  @ManyToOne(() => Gender, (genero) => genero.alunos, {
+    eager: true,
+    cascade: true,
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
+  })
+  genero: Gender;
 
   @OneToOne(() => User, (user) => user.aluno, { eager: true })
   @JoinColumn()

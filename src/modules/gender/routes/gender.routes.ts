@@ -1,33 +1,32 @@
-import { celebrate, Segments } from "celebrate";
 import { Router } from "express";
-import Joi from "joi";
-import RolesController from "../controllers/RolesController";
+import { celebrate, Joi, Segments } from "celebrate";
+import GenderController from "../controllers/GenderController";
 
-const rolesRouter = Router();
-const rolesController = new RolesController();
+const genderRouter = Router();
+const genderController = new GenderController();
 
-rolesRouter.get("/", rolesController.index);
-rolesRouter.get(
+genderRouter.get("/", genderController.index);
+genderRouter.get(
   "/:id",
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.number().required(),
     },
   }),
-  rolesController.show
+  genderController.show
 );
 
-rolesRouter.post(
+genderRouter.post(
   "/",
   celebrate({
     [Segments.BODY]: {
       descricao: Joi.string().required(),
     },
   }),
-  rolesController.create
+  genderController.create
 );
 
-rolesRouter.put(
+genderRouter.put(
   "/:id",
   celebrate({
     [Segments.PARAMS]: {
@@ -37,17 +36,17 @@ rolesRouter.put(
       descricao: Joi.string().required(),
     },
   }),
-  rolesController.update
+  genderController.update
 );
 
-rolesRouter.delete(
+genderRouter.delete(
   "/:id",
   celebrate({
     [Segments.PARAMS]: {
       id: Joi.number().required(),
     },
   }),
-  rolesController.delete
+  genderController.delete
 );
 
-export default rolesRouter;
+export default genderRouter;

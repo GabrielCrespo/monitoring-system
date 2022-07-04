@@ -1,15 +1,37 @@
 import "reflect-metadata";
 import express, { NextFunction, Request, Response } from "express";
-import "express-async-errors"
+import "express-async-errors";
 import cors from "cors";
 import routes from "./routes";
 import AppError from "@shared/errors/AppError";
 import "@shared/typeorm";
 import { errors } from "celebrate";
+import swaggerUI from "swagger-ui-express";
+import swaggerJsDoc from "swagger-jsdoc";
 
 const port = 3333;
 
+const options = {
+  definition: {
+    swagger: "2.0",
+    info: {
+      title: "Library API",
+      version: "1.0.0",
+      description: "Monitoring system",
+    },
+    servers: [
+      {
+        url: "http://localhost:3080",
+      },
+    ],
+  },
+  apis: ["**/*.{ts,js"],
+};
+
+const specs = swaggerJsDoc(options);
+
 const app = express();
+app.use("/api", swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use(cors());
 app.use(express.json());
@@ -28,8 +50,8 @@ app.use(
     }
     return response.status(500).json({
       status: "erro",
-      message: "Erro interno do servidor!"
-      //message: error.stack,
+      //message: "Erro interno do servidor!",
+      message: error.stack,
     });
   }
 );
