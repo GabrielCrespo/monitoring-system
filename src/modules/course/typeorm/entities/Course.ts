@@ -1,3 +1,7 @@
+import StudentInstructor from "../../../student_instructor/typeorm/entities/StudentInstructor";
+import Student from "../../../student/typeorm/entities/Student";
+import Preference from "../../../preference/typeorm/entities/Preference";
+
 import {
   Column,
   CreateDateColumn,
@@ -6,8 +10,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import StudentInstructor from "../../../student_instructor/typeorm/entities/StudentInstructor";
-import Student from "../../../student/typeorm/entities/Student";
 
 @Entity("curso")
 class Course {
@@ -25,6 +27,9 @@ class Course {
     (studentInstructor) => studentInstructor.curso
   )
   alunos_instrutores: StudentInstructor[];
+
+  @OneToMany(() => Preference, (preference) => preference.curso)
+  preferences: Preference[];
 
   @CreateDateColumn()
   created_at: Date;

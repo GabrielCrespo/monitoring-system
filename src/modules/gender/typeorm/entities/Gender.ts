@@ -1,4 +1,5 @@
 import StudentInstructor from "../../../student_instructor/typeorm/entities/StudentInstructor";
+import Preference from "../../../preference/typeorm/entities/Preference";
 
 import {
   Column,
@@ -19,6 +20,9 @@ class Gender {
 
   @OneToMany(() => StudentInstructor, (instructor) => instructor.genero)
   instrutores: StudentInstructor[];
+
+  @OneToMany(() => Preference, (preference) => preference.curso)
+  preferences: Preference[];
 
   @CreateDateColumn()
   created_at: Date;

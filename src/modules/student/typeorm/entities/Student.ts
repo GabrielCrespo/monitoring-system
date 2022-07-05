@@ -1,6 +1,7 @@
 import Team from "../../../class/typeorm/entities/Team";
 import Course from "../../../course/typeorm/entities/Course";
 import User from "../../../user/typeorm/entities/User";
+import Preference from "../../../preference/typeorm/entities/Preference";
 
 import {
   Column,
@@ -48,6 +49,14 @@ class Student {
     onDelete: "CASCADE",
   })
   turma: Team;
+
+  @ManyToOne(() => Preference, (team) => team.alunos, {
+    eager: true,
+    cascade: true,
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
+  })
+  preferencia: Preference;
 
   @OneToOne(() => User, (user) => user.aluno, { eager: true })
   @JoinColumn()
