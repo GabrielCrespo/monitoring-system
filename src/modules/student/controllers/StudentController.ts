@@ -32,11 +32,8 @@ class StudentController {
       email,
       senha,
       telefone,
-      idade,
-      ehCotista,
       curso,
       turma,
-      genero,
     } = request.body;
     const createStudentService = new CreateStudentService();
 
@@ -47,9 +44,6 @@ class StudentController {
       email,
       senha,
       telefone,
-      idade,
-      ehCotista,
-      genero,
       curso,
       turma,
     });
@@ -64,12 +58,9 @@ class StudentController {
       data_de_nascimento,
       email,
       senha,
-      idade,
       telefone,
-      ehCotista,
       curso,
       turma,
-      genero,
     } = request.body;
     const updateStudentService = new UpdateStudentService();
 
@@ -80,12 +71,9 @@ class StudentController {
       data_de_nascimento,
       email,
       senha,
-      idade,
       telefone,
-      ehCotista,
       curso,
       turma,
-      genero,
     });
     return response.json(student);
   }

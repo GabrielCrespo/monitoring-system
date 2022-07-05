@@ -1,4 +1,3 @@
-import Gender from "../../../gender/typeorm/entities/Gender";
 import Team from "../../../class/typeorm/entities/Team";
 import Course from "../../../course/typeorm/entities/Course";
 import User from "../../../user/typeorm/entities/User";
@@ -34,15 +33,6 @@ class Student {
   @Column("varchar", { nullable: true })
   avatar: string;
 
-  @Column({ default: true })
-  ativo: boolean;
-
-  @Column({ default: false })
-  ehCotista: boolean;
-
-  @Column()
-  idade: number;
-
   @ManyToOne(() => Course, (course) => course.alunos, {
     eager: true,
     cascade: true,
@@ -58,14 +48,6 @@ class Student {
     onDelete: "CASCADE",
   })
   turma: Team;
-
-  @ManyToOne(() => Gender, (genero) => genero.alunos, {
-    eager: true,
-    cascade: true,
-    onUpdate: "CASCADE",
-    onDelete: "CASCADE",
-  })
-  genero: Gender;
 
   @OneToOne(() => User, (user) => user.aluno, { eager: true })
   @JoinColumn()

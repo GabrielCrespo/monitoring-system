@@ -9,6 +9,7 @@ import userTypeRouter from "@modules/user_type/routes/roles.routes";
 import userRouter from "@modules/user/routes/user.routes";
 import userSessionRouter from "@modules/user/routes/teacherSession.routes";
 import genderRouter from "@modules/gender/routes/gender.routes";
+import quotaRouter from "@modules/quota/routes/quota.routes";
 
 const routes = Router();
 
@@ -23,5 +24,6 @@ routes.use("/teacher", teacherRouter);
 routes.use("/student", studentRouter);
 routes.use("/student-instructor", studentInstructorRouter);
 routes.use("/gender", genderRouter);
+routes.use("/quota", quotaRouter);
 
 export default routes;

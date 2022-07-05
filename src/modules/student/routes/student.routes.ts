@@ -33,11 +33,8 @@ studentRouter.post(
       email: Joi.string().email().required(),
       senha: Joi.string().required(),
       telefone: Joi.string().required(),
-      idade: Joi.number().required(),
-      ehCotista: Joi.boolean().required(),
       curso: Joi.required(),
       turma: Joi.required(),
-      genero: Joi.required(),
     },
   }),
   studentController.create
@@ -56,11 +53,8 @@ studentRouter.put(
       email: Joi.string().email().required(),
       senha: Joi.string().required(),
       telefone: Joi.string().required(),
-      idade: Joi.number().required(),
-      ehCotista: Joi.boolean().required(),
       curso: Joi.required(),
       turma: Joi.required(),
-      genero: Joi.required(),
     },
   }),
   studentController.update

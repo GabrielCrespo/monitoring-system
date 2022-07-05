@@ -30,12 +30,11 @@ class StudentInstructorController {
       email,
       senha,
       tipo_instrutor,
-      idade,
       telefone,
-      ehCotista,
       data_de_nascimento,
       curso,
       genero,
+      cota,
     } = request.body;
 
     const createStudentInstructorService = new CreateStudentInstructorService();
@@ -46,12 +45,11 @@ class StudentInstructorController {
       email,
       senha,
       telefone,
-      idade,
       tipo_instrutor,
-      ehCotista,
       data_de_nascimento,
       curso,
       genero,
+      cota,
     });
 
     return response.json(studentInstructor);
@@ -64,12 +62,11 @@ class StudentInstructorController {
       email,
       senha,
       telefone,
-      idade,
       tipo_instrutor,
-      ehCotista,
       data_de_nascimento,
       curso,
       genero,
+      cota,
     } = request.body;
     const updateStudentInstructorService = new UpdateStudentInstructorService();
 
@@ -80,12 +77,11 @@ class StudentInstructorController {
       email,
       senha,
       telefone,
-      idade,
       tipo_instrutor,
-      ehCotista,
       data_de_nascimento,
       curso,
       genero,
+      cota,
     });
 
     return response.json(studentInstructor);

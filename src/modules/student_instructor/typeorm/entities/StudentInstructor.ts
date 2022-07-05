@@ -1,6 +1,7 @@
 import Course from "../../../course/typeorm/entities/Course";
 import Gender from "../../../gender/typeorm/entities/Gender";
 import User from "../../../user/typeorm/entities/User";
+import Quota from "../../../quota/typeorm/entities/Quota";
 
 import {
   Column,
@@ -27,9 +28,6 @@ class StudentInstructor {
   @Column()
   data_de_nascimento: Date;
 
-  @Column({ default: false })
-  ehCotista: boolean;
-
   @Column("varchar", { nullable: true })
   telefone: string;
 
@@ -38,9 +36,6 @@ class StudentInstructor {
 
   @Column("varchar", { nullable: true })
   avatar: string;
-
-  @Column()
-  idade: number;
 
   @ManyToOne(() => Gender, (genero) => genero.instrutores, {
     eager: true,
@@ -57,6 +52,14 @@ class StudentInstructor {
     onDelete: "CASCADE",
   })
   curso: Course;
+
+  @ManyToOne(() => Quota, (quota) => quota.alunos_instrutores, {
+    eager: true,
+    cascade: true,
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
+  })
+  cota: Quota;
 
   @OneToOne(() => User, (user) => user.aluno, { eager: true })
   @JoinColumn()

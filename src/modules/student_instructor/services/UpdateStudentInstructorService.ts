@@ -9,6 +9,8 @@ import UserRepository from "@modules/user/typeorm/repositories/UserRepository";
 import GenderRepository from "@modules/gender/typeorm/repository/GenderRepository";
 import UpdateUserService from "@modules/user/services/UpdateUserService";
 import UserTypeRepository from "@modules/user_type/typeorm/repositories/UserTypeRepository";
+import Quota from "@modules/quota/typeorm/entities/Quota";
+import QuotaRepository from "@modules/quota/typeorm/repositories/QuotaRepository";
 
 interface IRequest {
   id: number;
@@ -16,13 +18,12 @@ interface IRequest {
   nome: string;
   email: string;
   senha: string;
-  idade: number;
   telefone: string;
   tipo_instrutor: string;
-  ehCotista: boolean;
   data_de_nascimento: Date;
   curso: Course;
   genero: Gender;
+  cota: Quota;
 }
 
 class UpdateStudentInstructorService {
@@ -32,13 +33,12 @@ class UpdateStudentInstructorService {
     nome,
     email,
     senha,
-    idade,
     telefone,
     tipo_instrutor,
-    ehCotista,
     data_de_nascimento,
     curso,
     genero,
+    cota,
   }: IRequest): Promise<StudentInstructor> {
     const studentInstructorRepository = getCustomRepository(
       StudentInstructorRepository
@@ -48,6 +48,7 @@ class UpdateStudentInstructorService {
     const userRepository = getCustomRepository(UserRepository);
     const userTypeRepository = getCustomRepository(UserTypeRepository);
     const generoRepository = getCustomRepository(GenderRepository);
+    const quotaRepository = getCustomRepository(QuotaRepository);
 
     const studentInstructor = await studentInstructorRepository.findById(id);
 
@@ -83,6 +84,12 @@ class UpdateStudentInstructorService {
       throw new AppError("Não foi possível encontrar o gênero!");
     }
 
+    const quotaExists = await quotaRepository.findOne(cota.id);
+
+    if (!quotaExists) {
+      throw new AppError("Não foi possível encontrar o tipo de cota!");
+    }
+
     const userType = await userTypeRepository.findByDescription(tipo_instrutor);
 
     const user = await new UpdateUserService().execute({
@@ -96,12 +103,11 @@ class UpdateStudentInstructorService {
     studentInstructor.matricula = matricula;
     studentInstructor.nome = nome;
     studentInstructor.telefone = telefone;
-    studentInstructor.ehCotista = ehCotista;
-    studentInstructor.idade = idade;
     studentInstructor.genero = genero;
     studentInstructor.data_de_nascimento = data_de_nascimento;
     studentInstructor.curso = curso;
     studentInstructor.usuario = user;
+    studentInstructor.cota = cota;
 
     await studentInstructorRepository.save(studentInstructor);
 

@@ -9,16 +9,19 @@ import {
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity("genero")
-class Gender {
+@Entity("cota")
+class Quota {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column("varchar", { unique: true })
   descricao: string;
 
-  @OneToMany(() => StudentInstructor, (instructor) => instructor.genero)
-  instrutores: StudentInstructor[];
+  @OneToMany(
+    () => StudentInstructor,
+    (studentInstructor) => studentInstructor.cota
+  )
+  alunos_instrutores: StudentInstructor[];
 
   @CreateDateColumn()
   created_at: Date;
@@ -27,4 +30,4 @@ class Gender {
   updated_at: Date;
 }
 
-export default Gender;
+export default Quota;

@@ -9,6 +9,8 @@ import UserRepository from "@modules/user/typeorm/repositories/UserRepository";
 import UserTypeRepository from "@modules/user_type/typeorm/repositories/UserTypeRepository";
 import CreateUserService from "@modules/user/services/CreateUserService";
 import GenderRepository from "@modules/gender/typeorm/repository/GenderRepository";
+import Quota from "@modules/quota/typeorm/entities/Quota";
+import QuotaRepository from "@modules/quota/typeorm/repositories/QuotaRepository";
 
 interface IRequest {
   matricula: string;
@@ -16,12 +18,11 @@ interface IRequest {
   email: string;
   senha: string;
   telefone: string;
-  idade: number;
   tipo_instrutor: string;
-  ehCotista: boolean;
   data_de_nascimento: Date;
   curso: Course;
   genero: Gender;
+  cota: Quota;
 }
 
 class CreateStudentInstructorService {
@@ -31,12 +32,11 @@ class CreateStudentInstructorService {
     email,
     senha,
     telefone,
-    idade,
     tipo_instrutor,
-    ehCotista,
     data_de_nascimento,
     curso,
     genero,
+    cota,
   }: IRequest): Promise<StudentInstructor> {
     const studentInstructorRepository = getCustomRepository(
       StudentInstructorRepository
@@ -45,6 +45,7 @@ class CreateStudentInstructorService {
     const userRepository = getCustomRepository(UserRepository);
     const userTypeRepository = getCustomRepository(UserTypeRepository);
     const generoRepository = getCustomRepository(GenderRepository);
+    const quotaRepository = getCustomRepository(QuotaRepository);
 
     const registerExists = await studentInstructorRepository.findByRegister(
       matricula
@@ -74,6 +75,12 @@ class CreateStudentInstructorService {
       throw new AppError("Não foi possível encontrar o gênero!");
     }
 
+    const quotaExists = await quotaRepository.findOne(cota.id);
+
+    if (!quotaExists) {
+      throw new AppError("Não foi possível encontrar o tipo de cota!");
+    }
+
     const userType = await userTypeRepository.findByDescription(tipo_instrutor);
 
     const usuario = await new CreateUserService().execute({
@@ -87,12 +94,11 @@ class CreateStudentInstructorService {
       nome,
       telefone,
       tipo_instrutor,
-      ehCotista,
-      idade,
       data_de_nascimento,
       curso,
       genero,
       usuario,
+      cota,
     });
 
     await studentInstructorRepository.save(studentInstructor);
