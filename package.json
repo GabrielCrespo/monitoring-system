@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register --inspect --transpile-only --ignore-watch node_modules src/shared/http/server.ts",
-    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js"
+    "typeorm": "ts-node-dev ./node_modules/typeorm/cli.js",
+    "db:seed": "ts-node ./node_modules/typeorm-seeding/dist/cli.js seed"
   },
   "repository": {
     "type": "git",
@@ -45,6 +46,7 @@
     "reflect-metadata": "^0.1.13",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0",
-    "typeorm": "^0.2.41"
+    "typeorm": "^0.2.41",
+    "typeorm-seeding": "^1.6.1"
   }
 }
