@@ -1,6 +1,6 @@
 import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import { sign } from "jsonwebtoken";
 import auth from "@config/auth";
 import UserRepository from "../typeorm/repositories/UserRepository";

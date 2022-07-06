@@ -6,7 +6,7 @@ import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
 import Student from "../typeorm/entities/Student";
 import StudentRepository from "../typeorm/repositories/StudentRepository";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import UserRepository from "@modules/user/typeorm/repositories/UserRepository";
 import Preference from "@modules/preference/typeorm/entities/Preference";
 import UpdatePreferenceService from "@modules/preference/services/UpdatePreferenceService";

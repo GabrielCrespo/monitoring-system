@@ -3,7 +3,7 @@ import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
 import Teacher from "../typeorm/entities/Teacher";
 import TeacherRepository from "../typeorm/repositories/TeacherRepository";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import TeamRepository from "@modules/class/typeorm/repositories/TeamRepository";
 import UserRepository from "@modules/user/typeorm/repositories/UserRepository";
 import UserTypeRepository from "@modules/user_type/typeorm/repositories/UserTypeRepository";

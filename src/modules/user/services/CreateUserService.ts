@@ -1,6 +1,6 @@
 import AppError from "@shared/errors/AppError";
 import { getCustomRepository } from "typeorm";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 import UserType from "@modules/user_type/typeorm/entities/UserType";
 import UserRepository from "../typeorm/repositories/UserRepository";
 import User from "../typeorm/entities/User";
