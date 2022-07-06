@@ -9,6 +9,9 @@ import StudentRepository from "../typeorm/repositories/StudentRepository";
 import CreateUserService from "@modules/user/services/CreateUserService";
 import UserTypeRepository from "@modules/user_type/typeorm/repositories/UserTypeRepository";
 import UserRepository from "@modules/user/typeorm/repositories/UserRepository";
+import PreferenceRepository from "@modules/preference/typeorm/repositories/PreferenceRepository";
+import Preference from "@modules/preference/typeorm/entities/Preference";
+import CreatePreferenceService from "@modules/preference/services/CreatePreferenceService";
 
 interface IRequest {
   matricula: string;
@@ -19,6 +22,7 @@ interface IRequest {
   telefone: string;
   curso: Course;
   turma: Team;
+  preferencia: Preference;
 }
 
 class CreateStudentService {
@@ -31,6 +35,7 @@ class CreateStudentService {
     senha,
     curso,
     turma,
+    preferencia,
   }: IRequest): Promise<Student> {
     const studentRepository = getCustomRepository(StudentRepository);
     const courseRepository = getCustomRepository(CourseRepository);
@@ -62,6 +67,12 @@ class CreateStudentService {
       throw new AppError("A turma escolhida não existe!");
     }
 
+    const preference = await new CreatePreferenceService().execute({
+      curso: preferencia.curso,
+      genero: preferencia.genero,
+      cota: preferencia.cota,
+    });
+
     const userType = await userTypeRepository.findByDescription("Aluno");
 
     const user = await new CreateUserService().execute({
@@ -78,6 +89,7 @@ class CreateStudentService {
       curso,
       turma,
       usuario: user,
+      preferencia: preference,
     });
 
     await studentRepository.save(student);

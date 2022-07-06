@@ -35,6 +35,7 @@ studentRouter.post(
       telefone: Joi.string().required(),
       curso: Joi.required(),
       turma: Joi.required(),
+      preferencia: Joi.required(),
     },
   }),
   studentController.create
@@ -55,6 +56,7 @@ studentRouter.put(
       telefone: Joi.string().required(),
       curso: Joi.required(),
       turma: Joi.required(),
+      preferencia: Joi.required(),
     },
   }),
   studentController.update

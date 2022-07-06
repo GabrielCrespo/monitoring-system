@@ -34,6 +34,7 @@ class StudentController {
       telefone,
       curso,
       turma,
+      preferencia,
     } = request.body;
     const createStudentService = new CreateStudentService();
 
@@ -46,6 +47,7 @@ class StudentController {
       telefone,
       curso,
       turma,
+      preferencia,
     });
     return response.json(student);
   }
@@ -61,6 +63,7 @@ class StudentController {
       telefone,
       curso,
       turma,
+      preferencia,
     } = request.body;
     const updateStudentService = new UpdateStudentService();
 
@@ -74,6 +77,7 @@ class StudentController {
       telefone,
       curso,
       turma,
+      preferencia,
     });
     return response.json(student);
   }

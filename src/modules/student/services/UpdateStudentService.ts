@@ -8,6 +8,8 @@ import Student from "../typeorm/entities/Student";
 import StudentRepository from "../typeorm/repositories/StudentRepository";
 import bcrypt from "bcrypt";
 import UserRepository from "@modules/user/typeorm/repositories/UserRepository";
+import Preference from "@modules/preference/typeorm/entities/Preference";
+import UpdatePreferenceService from "@modules/preference/services/UpdatePreferenceService";
 
 interface IRequest {
   id: number;
@@ -19,6 +21,7 @@ interface IRequest {
   telefone: string;
   curso: Course;
   turma: Team;
+  preferencia: Preference;
 }
 
 class UpdateStudentService {
@@ -32,6 +35,7 @@ class UpdateStudentService {
     telefone,
     curso,
     turma,
+    preferencia,
   }: IRequest): Promise<Student> {
     const studentRepository = getCustomRepository(StudentRepository);
     const courseRepository = getCustomRepository(CourseRepository);
@@ -68,6 +72,13 @@ class UpdateStudentService {
       throw new AppError("A turma escolhida não existe!");
     }
 
+    const updatePreferencia = await new UpdatePreferenceService().execute({
+      id: student.preferencia.id,
+      curso: preferencia.curso,
+      genero: preferencia.genero,
+      cota: preferencia.cota,
+    });
+
     const hashedSenha = await bcrypt.hash(senha, 8);
 
     student.matricula = matricula;
@@ -78,6 +89,7 @@ class UpdateStudentService {
     student.telefone = telefone;
     student.curso = curso;
     student.turma = turma;
+    student.preferencia = updatePreferencia;
 
     await studentRepository.save(student);
 
