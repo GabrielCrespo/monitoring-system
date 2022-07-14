@@ -2,13 +2,18 @@ import Course from "../../../course/typeorm/entities/Course";
 import Gender from "../../../gender/typeorm/entities/Gender";
 import User from "../../../user/typeorm/entities/User";
 import Quota from "../../../quota/typeorm/entities/Quota";
+import MonitoringTime from "../../../monitoring_time/typeorm/entities/MonitoringTime";
+import Attendence from "../../../attendance/typeorm/entities/Attendence";
 
 import {
   Column,
   CreateDateColumn,
   Entity,
   JoinColumn,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -61,9 +66,18 @@ class StudentInstructor {
   })
   cota: Quota;
 
+  @OneToMany(() => Attendence, (attendance) => attendance.aluno)
+  alunos_instrutores: Attendence[];
+
   @OneToOne(() => User, (user) => user.aluno, { eager: true })
   @JoinColumn()
   usuario: User;
+
+  @ManyToMany(() => MonitoringTime, { eager: true })
+  @JoinTable({
+    name: "instrutor_horario_monitoria",
+  })
+  horarios_monitoria: MonitoringTime[];
 
   @CreateDateColumn()
   created_at: Date;

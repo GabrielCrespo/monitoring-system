@@ -1,25 +1,19 @@
 import DayOfWeek from "../../../dayofweek/typeorm/entities/DayOfWeek";
 import Teacher from "../../../teacher/typeorm/entities/Teacher";
-import Student from "../../../student/typeorm/entities/Student";
 import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
+  ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 
-@Entity("turma")
-class Team {
+@Entity("horario_monitoria")
+class MonitoringTime {
   @PrimaryGeneratedColumn()
   id: number;
-
-  @Column()
-  descricao: string;
 
   @Column("time")
   hora_inicio: Date;
@@ -30,14 +24,13 @@ class Team {
   @OneToOne(() => Teacher, (teacher) => teacher.turma)
   professor: Teacher;
 
-  @OneToMany(() => Student, (student) => student.curso)
-  alunos: Student[];
-
-  @ManyToMany(() => DayOfWeek, { eager: true })
-  @JoinTable({
-    name: "turma_dias_da_semana",
+  @ManyToOne(() => DayOfWeek, (dayofweek) => dayofweek.horarios_monitoria, {
+    eager: true,
+    cascade: true,
+    onUpdate: "CASCADE",
+    onDelete: "CASCADE",
   })
-  dias_da_semana: DayOfWeek[];
+  dia_da_semana: DayOfWeek;
 
   @CreateDateColumn()
   created_at: Date;
@@ -46,4 +39,4 @@ class Team {
   updated_at: Date;
 }
 
-export default Team;
+export default MonitoringTime;

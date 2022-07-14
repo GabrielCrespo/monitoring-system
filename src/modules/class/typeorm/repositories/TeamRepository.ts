@@ -1,4 +1,4 @@
-import { EntityRepository, In, Repository } from "typeorm";
+import { EntityRepository, Repository } from "typeorm";
 import Team from "../entities/Team";
 
 interface IDayOfWeek {

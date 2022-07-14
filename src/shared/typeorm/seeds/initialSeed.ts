@@ -100,5 +100,7 @@ export default class InitialDatabaseSeed implements Seeder {
         },
       ])
       .execute();
+
+    await connection;
   }
 }

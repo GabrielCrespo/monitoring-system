@@ -2,6 +2,7 @@ import Team from "../../../class/typeorm/entities/Team";
 import Course from "../../../course/typeorm/entities/Course";
 import User from "../../../user/typeorm/entities/User";
 import Preference from "../../../preference/typeorm/entities/Preference";
+import Attendence from "../../../attendance/typeorm/entities/Attendence";
 
 import {
   Column,
@@ -9,6 +10,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -57,6 +59,9 @@ class Student {
     onDelete: "CASCADE",
   })
   preferencia: Preference;
+
+  @OneToMany(() => Attendence, (attendance) => attendance.aluno)
+  alunos: Attendence[];
 
   @OneToOne(() => User, (user) => user.aluno, { eager: true })
   @JoinColumn()

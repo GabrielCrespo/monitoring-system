@@ -9,7 +9,6 @@ import StudentRepository from "../typeorm/repositories/StudentRepository";
 import CreateUserService from "@modules/user/services/CreateUserService";
 import UserTypeRepository from "@modules/user_type/typeorm/repositories/UserTypeRepository";
 import UserRepository from "@modules/user/typeorm/repositories/UserRepository";
-import PreferenceRepository from "@modules/preference/typeorm/repositories/PreferenceRepository";
 import Preference from "@modules/preference/typeorm/entities/Preference";
 import CreatePreferenceService from "@modules/preference/services/CreatePreferenceService";
 
