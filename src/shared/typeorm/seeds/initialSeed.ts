@@ -7,9 +7,14 @@ import Quota from "../../../modules/quota/typeorm/entities/Quota";
 import DayOfWeek from "../../../modules/dayofweek/typeorm/entities/DayOfWeek";
 import UserType from "../../../modules/user_type/typeorm/entities/UserType";
 import Team from "../../../modules/class/typeorm/entities/Team";
+import MonitoringTime from "../../../modules/monitoring_time/typeorm/entities/MonitoringTime";
+import CreateSlotOfTime from "../../utils/CreateSlotOfTime";
 
 export default class InitialDatabaseSeed implements Seeder {
   public async run(factory: Factory, connection: Connection): Promise<void> {
+    const hours = CreateSlotOfTime.createSlotOfTime();
+    const days = Array.from({ length: 7 }, (_, day) => day + 1);
+
     await connection
       .createQueryBuilder()
       .insert()
@@ -101,6 +106,26 @@ export default class InitialDatabaseSeed implements Seeder {
       ])
       .execute();
 
-    await connection;
+    for (let day of days) {
+      for (let i = 0; i < hours.length; i++) {
+        if (new Date(hours[i]).toLocaleTimeString() == "23:00:00") {
+          break;
+        }
+        await connection
+          .createQueryBuilder()
+          .insert()
+          .into(MonitoringTime)
+          .values([
+            {
+              dia_da_semana: {
+                id: day,
+              },
+              hora_inicio: new Date(hours[i]),
+              hora_fim: new Date(hours[i + 1]),
+            },
+          ])
+          .execute();
+      }
+    }
   }
 }
