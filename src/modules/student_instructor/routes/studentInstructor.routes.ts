@@ -79,4 +79,17 @@ studentInstructorRouter.patch(
   upload.single("avatar"),
   studentInstructorAvatarController.update
 );
+
+studentInstructorRouter.put(
+  "/monitoring-time/:id",
+  celebrate({
+    [Segments.PARAMS]: {
+      id: Joi.number().required(),
+    },
+    [Segments.BODY]: {
+      horarios_monitoria: Joi.required(),
+    },
+  }),
+  studentInstructorController.createMonitoringTime
+);
 export default studentInstructorRouter;

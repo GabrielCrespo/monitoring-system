@@ -1,9 +1,12 @@
 import DayOfWeek from "../../../dayofweek/typeorm/entities/DayOfWeek";
 import Teacher from "../../../teacher/typeorm/entities/Teacher";
+import StudentInstructor from "../../../student_instructor/typeorm/entities/StudentInstructor";
 import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
+  ManyToMany,
   ManyToOne,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -31,6 +34,12 @@ class MonitoringTime {
     onDelete: "CASCADE",
   })
   dia_da_semana: DayOfWeek;
+
+  @ManyToMany(
+    () => StudentInstructor,
+    (instructor) => instructor.horarios_monitoria
+  )
+  alunos_monitores: StudentInstructor[];
 
   @CreateDateColumn()
   created_at: Date;

@@ -73,7 +73,7 @@ class StudentInstructor {
   @JoinColumn()
   usuario: User;
 
-  @ManyToMany(() => MonitoringTime, { eager: true })
+  @ManyToMany(() => MonitoringTime, { eager: true, cascade: true })
   @JoinTable({
     name: "instrutor_horario_monitoria",
   })

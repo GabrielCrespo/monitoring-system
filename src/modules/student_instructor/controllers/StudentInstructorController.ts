@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import CreateStudenteInstructorMonitoringTimeService from "../services/CreateStudenteInstructorMonitoringTimeService";
 import CreateStudentInstructorService from "../services/CreateStudentInstructorService";
 import DeleteStudentInstructorService from "../services/DeleteStudentInstructorService";
 import ListStudentInstructorService from "../services/ListStudentInstructorService";
@@ -95,6 +96,25 @@ class StudentInstructorController {
     deleteStudentInstructorService.execute({ id: Number.parseInt(id) });
 
     return response.json([]);
+  }
+
+  public async createMonitoringTime(
+    request: Request,
+    response: Response
+  ): Promise<Response> {
+    const { horarios_monitoria } = request.body;
+    const { id } = request.params;
+
+    const createStudenteInstructorMonitoringTimeService =
+      new CreateStudenteInstructorMonitoringTimeService();
+
+    const studentInstructor =
+      await createStudenteInstructorMonitoringTimeService.execute({
+        id: Number.parseInt(id),
+        horarios_monitoria,
+      });
+
+    return response.json(studentInstructor);
   }
 }
 
